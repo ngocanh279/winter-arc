@@ -1,6 +1,5 @@
-// Winter Arc System V2 — Supabase configuration
-// Paste your Supabase Project URL and Publishable key here.
-// NEVER put a service_role/secret key in this file.
+// Winter Arc System — Supabase configuration
+
 window.SUPABASE_CONFIG = {
   url: "https://txmhcnqdyklsmodcjabx.supabase.co",
   anonKey: "sb_publishable_uqWgtpYEcaY0DBJJjlDxAA_imOgrgWY"
