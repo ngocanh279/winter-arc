@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Winter Arc System — V3.1 Wishlist</title>
+<title>Winter Arc System — V3.2 Quest Engine</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <div class="app">
 <header>
-  <div class="brand">❄ WINTER ARC SYSTEM <span style="font-size:10px;opacity:.55">V3.1</span></div>
+  <div class="brand">❄ WINTER ARC SYSTEM <span style="font-size:10px;opacity:.55">V3.2</span></div>
   <div class="header-right"><div class="day" id="headerDay"></div><button class="icon-btn" onclick="showSystem()">⚙</button></div>
 </header>
 
@@ -75,7 +75,18 @@
 </div>
 </section>
 
-<section id="quests" class="page"><div class="card"><div class="section-title"><h2>Quest Board</h2><span class="pill" id="questBoardDay"></span></div><div id="allQuests"></div></div></section>
+<section id="quests" class="page">
+<div class="card">
+  <div class="section-title"><h2>Today's Route</h2><span class="pill" id="questBoardDay"></span></div>
+  <div class="notice">The system recommends 7 priorities. Your route is guidance — not a cage.</div>
+  <div id="allQuests"></div>
+</div>
+<div class="card quest-world-card">
+  <div class="section-title"><h2>Quest World</h2><span class="pill">EXPLORE MORE</span></div>
+  <div class="quest-tools"><div class="notice" style="margin:0;flex:1">Daily Route cleared? Keep playing. Bonus quests stay available, with diminishing rewards after the first three.</div><button class="btn gold" onclick="surpriseMe()">🎲 SURPRISE ME</button></div>
+  <div id="bonusQuestBoard" class="bonus-board"></div>
+</div>
+</section>
 
 <section id="skills" class="page"><div class="card"><div class="section-title"><h2>Skill Tree</h2><span class="pill">12 ATTRIBUTES</span></div><div id="allSkills"></div></div></section>
 
@@ -123,7 +134,7 @@
 
 <section id="system" class="page">
 <div class="grid">
-<section class="card"><div class="section-title"><h2>System Status</h2><span class="pill">V3.1 · V3 ENGINE + WISHLIST</span></div><div id="systemInfo"></div></section>
+<section class="card"><div class="section-title"><h2>System Status</h2><span class="pill">V3.2 · QUEST ENGINE WAVE 1</span></div><div id="systemInfo"></div></section>
 <section class="card"><div class="section-title"><h2>Save Controls</h2><span class="pill">PERSISTENT</span></div>
   <div class="notice">The game uses the real calendar date. When a new date is detected, the old route is archived, Energy resets, and a new route is generated. Cloud data follows the same engine.</div>
   <button class="btn" onclick="exportSave()">Export Save</button>
@@ -149,6 +160,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
 <script src="js/data.js"></script>
+<script src="js/quest-engine.js"></script>
 <script src="js/engine.js"></script>
 <script src="js/wishlist.js"></script>
 <script src="js/ui.js"></script>
