@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Winter Arc System — V3</title>
-<style>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Winter Arc System — V4</title><style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
 :root{
   --ivory:#f4f1e8;--paper:#fbfaf6;--green:#193b32;--green2:#2d5a4d;
@@ -55,511 +49,118 @@ header{display:flex;justify-content:space-between;align-items:center;gap:14px;ma
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--green);color:white;padding:11px 16px;border-radius:11px;font-size:11px;opacity:0;pointer-events:none;transition:.25s;z-index:20}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .modal-backdrop{position:fixed;inset:0;background:#193b3238;display:none;align-items:center;justify-content:center;padding:18px;z-index:30}.modal-backdrop.show{display:flex}.modal{max-width:480px;width:100%;background:var(--paper);border-radius:18px;padding:20px;border:1px solid var(--line);box-shadow:0 20px 60px #193b3222}.modal h2{font-family:"Playfair Display";margin-top:0}
 @media(max-width:820px){.app{padding:12px}.grid{grid-template-columns:1fr}.full{grid-column:auto}.bottom{grid-template-columns:1fr}.quest{align-items:flex-start;flex-direction:column}.quest>div:last-child{width:100%}.shop-grid{grid-template-columns:1fr}.auth-input{width:100%;margin:4px 0}.header-right{align-items:flex-end}.name{font-size:29px}}
-</style>
-</head>
-<body>
+
+.welcome{padding:22px;background:linear-gradient(135deg,#193b32,#2d5a4d);color:white;border-radius:18px;margin-bottom:16px;position:relative;overflow:hidden}.welcome:after{content:'❄';position:absolute;right:18px;top:-15px;font-size:95px;opacity:.06}.welcome h1{font-family:"Playfair Display";font-size:28px;margin:4px 0}.welcome p{font-size:11px;opacity:.78;margin:4px 0}.mode{display:inline-block;margin-top:10px;padding:5px 9px;border:1px solid #ffffff28;border-radius:99px;font-size:9px;letter-spacing:1px}.route-type{font-size:8px;letter-spacing:1px;color:var(--gold);font-weight:700;margin-bottom:3px}.rarity{font-size:8px;padding:3px 6px;border-radius:99px;background:#f0eee7;color:var(--muted);margin-left:5px}.rarity.rare{background:#e9e2f3;color:#6d5688}.rarity.epic{background:#f2e4dc;color:#8b5c45}.rarity.legendary{background:#f4e9c9;color:#80652f}.toolbar{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}.filter{border:1px solid var(--line);background:white;border-radius:99px;padding:6px 9px;font-size:9px}.filter.active{background:var(--green);color:white}.quest.lockedq{opacity:.48}.unlock{padding:10px;border:1px dashed var(--line);border-radius:11px;margin:7px 0;font-size:10px}.skill-node{display:grid;grid-template-columns:125px 1fr auto;gap:9px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);font-size:10px}.skill-node.locked{opacity:.4}.class-card{padding:14px;border:1px solid var(--line);border-radius:13px;background:#f2f3ef}.chart{height:150px;display:flex;gap:8px;align-items:end;padding:12px 4px 0}.chartcol{flex:1;text-align:center;font-size:8px;color:var(--muted)}.chartbar{background:var(--green2);border-radius:7px 7px 2px 2px;min-height:3px;margin-bottom:5px}.wishlist-card{display:grid;grid-template-columns:72px 1fr auto;gap:10px;align-items:center;border:1px solid var(--line);padding:10px;border-radius:13px;margin:8px 0}.wishimg{width:72px;height:72px;border-radius:10px;object-fit:cover;background:#eceae3}.input{padding:9px;border:1px solid var(--line);border-radius:9px;background:white;width:100%;margin:4px 0}.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}.login-gift{border:1px solid #ddcda6;background:#f6f0df}.big-number{font-family:"Playfair Display";font-size:25px;color:var(--green)}.subtle{font-size:9px;color:var(--muted)}.better{display:grid;grid-template-columns:1fr 1fr;gap:8px}.better>div{padding:10px;border:1px solid var(--line);border-radius:11px}.achievement-tier{font-size:8px;color:var(--gold);letter-spacing:1px}.hidden-ach{filter:blur(3px);user-select:none}.music-toggle{font-size:9px}.boss-title{font-family:"Playfair Display";font-size:19px}.danger-zone{border-color:#d9c2bc;background:#faf5f3}
+@media(max-width:650px){.two,.better{grid-template-columns:1fr}.wishlist-card{grid-template-columns:55px 1fr}.wishimg{width:55px;height:55px}.wishlist-card>div:last-child{grid-column:1/-1}.skill-node{grid-template-columns:100px 1fr}.welcome h1{font-size:24px}}
+</style></head><body>
 <div class="app">
-<header>
-  <div class="brand">❄ WINTER ARC SYSTEM <span style="font-size:10px;opacity:.55">V3</span></div>
-  <div class="header-right"><div class="day" id="headerDay"></div><button class="icon-btn" onclick="showSystem()">⚙</button></div>
-</header>
-
-<nav class="tabs">
-  <button class="tab active" data-page="dashboard">Dashboard</button>
-  <button class="tab" data-page="quests">Quests</button>
-  <button class="tab" data-page="skills">Skills</button>
-  <button class="tab" data-page="shop">Shop</button>
-  <button class="tab" data-page="achievements">Achievements</button>
-  <button class="tab" data-page="progress">Progress</button>
-  <button class="tab" data-page="system">System</button>
-</nav>
-
+<header><div class="brand">❄ WINTER ARC SYSTEM <span style="font-size:10px;opacity:.55">V4 · THE GAME UPDATE</span></div><div class="header-right"><button class="icon-btn music-toggle" id="musicBtn" onclick="toggleMusic()">♫ MUSIC OFF</button><div class="day" id="headerDay"></div><button class="icon-btn" onclick="showSystem()">⚙</button></div></header>
+<nav class="tabs"><button class="tab active" data-page="dashboard">Today</button><button class="tab" data-page="quests">Quest Board</button><button class="tab" data-page="skills">Character</button><button class="tab" data-page="shop">Rewards</button><button class="tab" data-page="achievements">Achievements</button><button class="tab" data-page="progress">Progress</button><button class="tab" data-page="system">System</button></nav>
 <section id="dashboard" class="page active">
+<div class="welcome"><div class="eyebrow">BECOME BETTER THAN YESTERDAY</div><h1 id="greeting">Good morning, Eleanor.</h1><p id="welcomeLine">A new day has entered the system.</p><span class="mode" id="dailyMode">⚖ NORMAL DAY</span></div>
 <div class="grid">
-<section class="card hero">
-  <div class="eyebrow">CHARACTER PROFILE</div>
-  <div class="name">ELEANOR <span id="level">LV.01</span></div>
-  <div class="class">CLASS: <span id="class">UNDEFINED</span></div>
-  <div style="font-size:10px;opacity:.7">XP <span id="xp">0</span> / <span id="nextxp">135</span></div>
-  <div class="bar"><i id="xpbar"></i></div>
-  <div class="stats">
-    <div class="stat"><b id="momentum">50</b><span>MOMENTUM</span></div>
-    <div class="stat"><b id="energy">100</b><span>ENERGY</span></div>
-    <div class="stat"><b id="coins">0</b><span>COINS</span></div>
-    <div class="stat"><b id="questsDone">0/7</b><span>QUESTS TODAY</span></div>
-  </div>
-  <div class="momentum"><div style="font-size:9px;opacity:.7;margin-bottom:4px">MOMENTUM</div><div class="bar"><i id="mbar"></i></div></div>
-  <div class="chapter"><b id="chapter">AWAKENING</b><br><span id="chapterDesc">The system has come online.</span></div>
-</section>
+<section class="card hero"><div class="eyebrow">CHARACTER PROFILE</div><div class="name">ELEANOR <span id="level">LV.01</span></div><div class="class">CLASS: <span id="class">UNDEFINED</span></div><div style="font-size:10px;opacity:.7">XP <span id="xp">0</span> / <span id="nextxp">135</span></div><div class="bar"><i id="xpbar"></i></div><div class="stats"><div class="stat"><b id="momentum">50</b><span>MOMENTUM</span></div><div class="stat"><b id="energy">100</b><span>ENERGY</span></div><div class="stat"><b id="coins">0</b><span>COINS</span></div><div class="stat"><b id="questsDone">0/7</b><span>ROUTE TODAY</span></div></div><div class="chapter"><b id="chapter">AWAKENING</b><br><span id="chapterDesc"></span></div></section>
+<section class="card login-gift"><div class="section-title"><h2>🎁 Daily Check-In</h2><span class="pill" id="loginStatus">AVAILABLE</span></div><div id="loginBox"></div></section>
+<section class="card full"><div class="section-title"><h2>Today's Route</h2><span class="pill" id="route"></span></div><div class="notice" id="dailyBrief"></div><div id="dashboardQuests"></div><div class="toolbar"><button class="btn" onclick="goPage('quests')">EXPLORE QUESTS</button><button class="btn gold" onclick="surpriseMe()">🎲 SURPRISE ME</button><button class="btn" onclick="openPersonalQuest()">＋ PERSONAL QUEST</button></div></section>
+<section class="card"><div class="section-title"><h2>🍂 System Event</h2><span class="pill">LIGHT STORY</span></div><div id="eventBox"></div></section>
+<section class="card"><div class="section-title"><h2>🌱 Better Than Yesterday</h2><span class="pill">SELF VS SELF</span></div><div id="betterBox"></div></section>
+<section class="card full"><div class="section-title"><h2>🎁 Next Reward</h2><span class="pill">WISHLIST TARGET</span></div><div id="nextReward"></div></section>
+<div class="bottom full"><section class="card"><div class="section-title"><h2>Skill Snapshot</h2><span class="pill">PROGRESSIVE TREE</span></div><div id="skillSnapshot"></div></section><section class="card"><div class="section-title"><h2>System Log</h2><span class="pill">AUTO-SAVED</span></div><div class="log" id="log"></div></section></div>
+<section class="card full" id="cloudCard"><div class="section-title"><h2>☁ Cloud Save</h2><span class="pill" id="cloudStatus">LOCAL MODE</span></div><div class="notice" id="authNotice"></div><div id="authForm"><input id="email" class="auth-input" type="email" placeholder="Email"><input id="password" class="auth-input" type="password" placeholder="Password"><button class="btn primary" onclick="signUp()">Create account</button><button class="btn" onclick="signIn()">Log in</button></div><div id="userPanel" style="display:none"><span id="userEmail" style="font-size:11px"></span> <button class="btn" onclick="syncNow()">Sync now</button><button class="btn" onclick="signOutUser()">Log out</button></div></section>
+</div></section>
+<section id="quests" class="page"><div class="card"><div class="section-title"><h2>Quest Board</h2><span class="pill" id="questBoardDay"></span></div><div class="notice">The System recommends. Eleanor decides. Daily Route rewards are full; bonus quests remain open after the route is cleared.</div><div class="toolbar" id="questFilters"></div><div id="allQuests"></div></div></section>
+<section id="skills" class="page"><div class="grid"><section class="card"><div class="section-title"><h2>Character</h2><span class="pill">IDENTITY ANALYSIS</span></div><div id="characterBox"></div></section><section class="card"><div class="section-title"><h2>Skill Tree</h2><span class="pill">UNLOCK BY LEVEL</span></div><div id="allSkills"></div></section><section class="card full"><div class="section-title"><h2>Traits & Titles</h2><span class="pill">BEHAVIOR-BASED</span></div><div id="traitsBox"></div></section></div></section>
+<section id="shop" class="page"><div class="grid"><section class="card"><div class="section-title"><h2>Reward Shop</h2><span class="pill">🪙 <span id="shopCoins"></span></span></div><div class="shop-grid" id="shopGrid"></div></section><section class="card"><div class="section-title"><h2>My Wishlist</h2><span class="pill">REAL-LIFE REWARDS</span></div><div class="notice">Add something you genuinely want. Images are stored inside your save, so keep them small.</div><button class="btn primary" onclick="openWishlist()">＋ ADD WISH</button><div id="wishlist"></div></section></div></section>
+<section id="achievements" class="page"><div class="card"><div class="section-title"><h2>Achievement Archive</h2><span class="pill" id="achievementCount"></span></div><div id="achievementList"></div></div></section>
+<section id="progress" class="page"><div class="grid"><section class="card"><div class="section-title"><h2>Weekly Effort</h2><span class="pill">7 DAYS</span></div><div id="weeklyChart"></div></section><section class="card"><div class="section-title"><h2>Monthly Effort</h2><span class="pill">30 DAYS</span></div><div id="monthStats"></div></section><section class="card"><div class="section-title"><h2>⚔ Boss Encounter</h2><span class="pill" id="bossStatus"></span></div><div id="bossCard"></div></section><section class="card"><div class="section-title"><h2>Journey</h2><span class="pill" id="timelineDay"></span></div><div id="timeline"></div></section><section class="card full"><div class="section-title"><h2>Skill Progress</h2><span class="pill">MASTERY</span></div><div id="progressStats"></div></section></div></section>
+<section id="system" class="page"><div class="grid"><section class="card"><div class="section-title"><h2>System Status</h2><span class="pill">V4 ENGINE</span></div><div id="systemInfo"></div></section><section class="card"><div class="section-title"><h2>Save Controls</h2><span class="pill">PERSISTENT</span></div><button class="btn" onclick="exportSave()">Export Save</button><button class="btn" onclick="document.getElementById('importFile').click()">Import Save</button><button class="btn" onclick="resetToday()">Reset Today's Route</button><input id="importFile" type="file" accept=".json" style="display:none" onchange="importSave(event)"></section><section class="card full"><div class="section-title"><h2>System Laws</h2><span class="pill">CORE PHILOSOPHY</span></div><ul style="font-size:10px;line-height:1.9;color:var(--muted)"><li>Become better than yesterday — never better than someone else.</li><li>The System guides. Eleanor decides.</li><li>Never punish recovery. XP already earned is never removed.</li><li>Life comes before the game; adaptation is legitimate progress.</li><li>There is always a minimum viable day.</li><li>Consistency beats perfection; difficulty should challenge, not exhaust.</li><li>Real-life value must stay greater than game value.</li></ul></section><section class="card full danger-zone"><div class="section-title"><h2>Danger Zone</h2><span class="pill">IRREVERSIBLE</span></div><button class="btn" onclick="resetAll()">Reset Entire V4 Save</button></section></div></section>
+</div><div class="toast" id="toast"></div><div class="modal-backdrop" id="modal"><div class="modal"><h2 id="modalTitle"></h2><div id="modalBody"></div><div style="text-align:right;margin-top:14px"><button class="btn primary" onclick="closeModal()">Close</button></div></div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script><script>
 
-<section class="card">
-  <div class="section-title"><h2>Today's Route</h2><span class="pill" id="route">DAY 01</span></div>
-  <div class="notice" id="dailyBrief">SYSTEM ONLINE · Today's route is generated from the current calendar date.</div>
-  <div id="dashboardQuests"></div>
-</section>
-
-<section class="card full">
-  <div class="section-title"><h2>⚡ Daily Event</h2><span class="pill">ADAPTATION SYSTEM</span></div>
-  <div id="eventBox"></div>
-</section>
-
-<div class="bottom full">
-<section class="card"><div class="section-title"><h2>Skill Snapshot</h2><span class="pill">12 STATS</span></div><div id="skillSnapshot"></div></section>
-<section class="card"><div class="section-title"><h2>System Log</h2><span class="pill">AUTO-SAVED</span></div><div class="log" id="log"></div></section>
-</div>
-
-<section class="card full" id="cloudCard">
-  <div class="section-title"><h2>☁ Cloud Save</h2><span class="pill" id="cloudStatus">LOCAL MODE</span></div>
-  <div class="notice" id="authNotice">Cloud save is not connected. Add your Supabase settings to <b>config.js</b>.</div>
-  <div id="authForm">
-    <input id="email" class="auth-input" type="email" placeholder="Email">
-    <input id="password" class="auth-input" type="password" placeholder="Password">
-    <button class="btn primary" onclick="signUp()">Create account</button>
-    <button class="btn" onclick="signIn()">Log in</button>
-  </div>
-  <div id="userPanel" style="display:none">
-    <span id="userEmail" style="font-size:11px"></span>
-    <button class="btn" onclick="syncNow()">Sync now</button>
-    <button class="btn" onclick="signOutUser()">Log out</button>
-  </div>
-</section>
-</div>
-</section>
-
-<section id="quests" class="page"><div class="card"><div class="section-title"><h2>Quest Board</h2><span class="pill" id="questBoardDay"></span></div><div id="allQuests"></div></div></section>
-
-<section id="skills" class="page"><div class="card"><div class="section-title"><h2>Skill Tree</h2><span class="pill">12 ATTRIBUTES</span></div><div id="allSkills"></div></div></section>
-
-<section id="shop" class="page"><div class="card"><div class="section-title"><h2>Reward Shop</h2><span class="pill">COINS <span id="shopCoins">0</span></span></div><div class="notice">Real-life rewards are purchased with coins. The system never decides what you buy — you create the wishlist.</div><div class="shop-grid" id="shopGrid"></div></div></section>
-
-<section id="achievements" class="page"><div class="card"><div class="section-title"><h2>Achievements</h2><span class="pill" id="achievementCount"></span></div><div id="achievementList"></div></div></section>
-
-<section id="progress" class="page">
-<div class="grid">
-<section class="card"><div class="section-title"><h2>Winter Arc Timeline</h2><span class="pill" id="timelineDay"></span></div><div id="timeline"></div></section>
-<section class="card"><div class="section-title"><h2>Weekly Boss</h2><span class="pill" id="bossStatus"></span></div><div id="bossCard"></div></section>
-<section class="card full"><div class="section-title"><h2>Stat Progress</h2><span class="pill">CURRENT RUN</span></div><div id="progressStats"></div></section>
-</div>
-</section>
-
-<section id="system" class="page">
-<div class="grid">
-<section class="card"><div class="section-title"><h2>System Status</h2><span class="pill">V3 ENGINE</span></div><div id="systemInfo"></div></section>
-<section class="card"><div class="section-title"><h2>Save Controls</h2><span class="pill">PERSISTENT</span></div>
-  <div class="notice">The game uses the real calendar date. When a new date is detected, the old route is archived, Energy resets, and a new route is generated. Cloud data follows the same engine.</div>
-  <button class="btn" onclick="exportSave()">Export Save</button>
-  <button class="btn" onclick="document.getElementById('importFile').click()">Import Save</button>
-  <button class="btn" onclick="resetToday()">Reset Today's Progress</button>
-  <button class="btn" onclick="resetAll()">Reset Entire Save</button>
-  <input id="importFile" type="file" accept=".json" style="display:none" onchange="importSave(event)">
-</section>
-<section class="card full"><div class="section-title"><h2>Design Rules</h2><span class="pill">CORE PHILOSOPHY</span></div>
-<ul style="font-size:10px;line-height:1.8;color:var(--muted)">
-<li>Adaptation beats perfection.</li><li>A disrupted day is an interruption, not a failure.</li>
-<li>XP, skills and coins reward meaningful action.</li><li>Energy represents bandwidth, not worth.</li>
-<li>The calendar drives the daily route — not the browser cache.</li>
-<li>Cloud Save is the canonical cross-device backup when connected.</li>
-</ul></section>
-</div>
-</section>
-</div>
-
-<div class="toast" id="toast"></div>
-<div class="modal-backdrop" id="modal"><div class="modal"><h2 id="modalTitle"></h2><div id="modalBody"></div><div style="text-align:right;margin-top:14px"><button class="btn primary" onclick="closeModal()">Close</button></div></div></div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="config.js"></script>
-<script>
-const START_DATE="2026-09-17";
-const STORAGE_KEY="WINTER_ARC_SYSTEM_V3";
-const SKILLS={Body:0,English:0,Chinese:0,Academic:0,Knowledge:0,Lifestyle:0,Appearance:0,Career:0,Finance:0,Discipline:0,Communication:0,Reading:0};
-
-const QUESTS={
- main:[
-  {id:"eng30",icon:"🇬🇧",title:"LANGUAGE AWAKENING",desc:"English speaking / shadowing — 30 min",xp:50,coin:20,energy:20,stats:{English:30}},
-  {id:"workout",icon:"🏋🏻",title:"BODY FORGE",desc:"Complete today's workout or 30 min movement",xp:60,coin:25,energy:30,stats:{Body:35}},
-  {id:"academic",icon:"🎓",title:"SCHOLAR'S HOUR",desc:"Focused academic work — 45 min",xp:55,coin:22,energy:25,stats:{Academic:30,Knowledge:10}},
-  {id:"career",icon:"💼",title:"CAREER MOVE",desc:"One concrete career / CV / opportunity action",xp:45,coin:20,energy:18,stats:{Career:28,Communication:8}}
- ],
- side:[
-  {id:"chi",icon:"🇨🇳",title:"MANDARIN MOMENT",desc:"Chinese — 20 min",xp:20,coin:10,energy:10,stats:{Chinese:20}},
-  {id:"ir",icon:"🌐",title:"DIPLOMAT'S EYE",desc:"Read 1 IR / foreign-policy piece + 3 takeaways",xp:25,coin:12,energy:12,stats:{Knowledge:20,Reading:10}},
-  {id:"read",icon:"📖",title:"PAGE TURNER",desc:"Read 15 pages of a chosen book",xp:20,coin:10,energy:8,stats:{Reading:18}},
-  {id:"space",icon:"✨",title:"LIFE RESET",desc:"10-minute reset + prepare tomorrow",xp:10,coin:5,energy:5,stats:{Lifestyle:10,Discipline:5}},
-  {id:"finance",icon:"💰",title:"MONEY AWARENESS",desc:"Track spending / budget for 10 min",xp:15,coin:8,energy:5,stats:{Finance:15}},
-  {id:"appear",icon:"🪞",title:"POLISHED SELF",desc:"Complete one intentional appearance / skincare action",xp:15,coin:8,energy:4,stats:{Appearance:15}},
-  {id:"comm",icon:"🗣️",title:"SOCIAL REP",desc:"One meaningful conversation or communication rep",xp:18,coin:9,energy:7,stats:{Communication:18}},
-  {id:"water",icon:"💧",title:"HYDRATE",desc:"Hit your water target",xp:5,coin:2,energy:0,stats:{Lifestyle:5}},
-  {id:"sleep",icon:"🌙",title:"SLEEP PROTOCOL",desc:"Start bedtime routine on time",xp:10,coin:5,energy:0,stats:{Lifestyle:10,Discipline:5}}
-],
-micro:[
-  {id:"water",icon:"💧",title:"HYDRATE",desc:"Drink a full glass of water now",xp:5,coin:2,energy:0,stats:{Lifestyle:5}},
-  {id:"stretch",icon:"🧘",title:"RESET BREATH",desc:"5 min stretch / breathing",xp:8,coin:3,energy:2,stats:{Lifestyle:6,Body:2}},
-  {id:"desk",icon:"🗂️",title:"CLEAR ONE THING",desc:"Put away 5 items / close one tiny loop",xp:6,coin:2,energy:1,stats:{Discipline:6,Lifestyle:3}},
-  {id:"vocab",icon:"📝",title:"WORD DROP",desc:"Learn 5 English or Chinese words",xp:7,coin:3,energy:2,stats:{English:4,Chinese:4}},
-  {id:"journal",icon:"✍️",title:"SYSTEM CHECK-IN",desc:"Write 3 lines: win / lesson / next move",xp:8,coin:3,energy:1,stats:{Discipline:5,Communication:3}}
-]};
-
-const SHOP=[
- {id:"common",icon:"☕",name:"Small Treat",desc:"Coffee, matcha, dessert or a small comfort",price:80},
- {id:"selfdate",icon:"🎬",name:"Self-Date",desc:"Movie, café, museum or solo outing",price:180},
- {id:"fashion",icon:"👗",name:"Wishlist Fashion",desc:"One item from your approved wishlist",price:350},
- {id:"beauty",icon:"✨",name:"Beauty Drop",desc:"Skincare / hair / beauty item from your wishlist",price:300},
- {id:"rare",icon:"🎁",name:"Rare Reward",desc:"A deliberately chosen reward you really want",price:600},
- {id:"legendary",icon:"❄️",name:"Legendary Reward",desc:"Major end-of-chapter reward",price:1200}
-];
-
-const ACHIEVEMENTS=[
- {id:"first",name:"FIRST BLOOD",desc:"Complete your first quest",check:s=>s.stats.totalCompleted>=1},
- {id:"five",name:"GETTING SERIOUS",desc:"Complete 5 quests",check:s=>s.stats.totalCompleted>=5},
- {id:"ten",name:"DOUBLE DIGITS",desc:"Complete 10 quests",check:s=>s.stats.totalCompleted>=10},
- {id:"comeback",name:"COMEBACK",desc:"Use Adaptation after an interruption",check:s=>s.stats.adapted>=1},
- {id:"week",name:"ONE WEEK ONLINE",desc:"Reach Day 7",check:s=>s.day>=7},
- {id:"level5",name:"LEVEL 05",desc:"Reach Level 5",check:s=>s.level>=5},
- {id:"coins500",name:"TREASURE HUNTER",desc:"Hold 500 coins",check:s=>s.coins>=500},
- {id:"skill100",name:"SPECIALIST",desc:"Reach 100 in any skill",check:s=>Object.values(s.skills).some(v=>v>=100)},
- {id:"boss",name:"BOSS BREAKER",desc:"Clear a weekly boss",check:s=>s.stats.bossesCleared>=1},
- {id:"adapt3",name:"MASTER OF ADAPTATION",desc:"Adapt 3 quests",check:s=>s.stats.adapted>=3},
- {id:"day14",name:"FORTNIGHT",desc:"Reach Day 14",check:s=>s.day>=14},
- {id:"day30",name:"THE ARC IS REAL",desc:"Reach Day 30",check:s=>s.day>=30}
-];
-
-const initialState={
- version:3,startDate:START_DATE,lastDate:null,day:1,level:1,xp:0,momentum:50,energy:100,coins:0,class:"UNDEFINED",
- todayQuests:[],done:{},skills:{...SKILLS},logs:[],events:[],history:[],
- stats:{totalCompleted:0,totalAdapted:0,adapted:0,bossesCleared:0,questsByDay:{}},
- achievements:[],purchased:[],wishlist:[],
- currentEvent:null,bossProgress:0,bossCleared:false
-};
-
-let cloud=null,cloudUser=null,cloudReady=false;
-try{
- if(window.SUPABASE_CONFIG?.url && window.SUPABASE_CONFIG?.anonKey){
-  cloud=supabase.createClient(window.SUPABASE_CONFIG.url,window.SUPABASE_CONFIG.anonKey);cloudReady=true;
- }
-}catch(e){console.warn(e)}
-
-function clone(o){return JSON.parse(JSON.stringify(o))}
-function localISO(){
- const d=new Date(), y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0");
- return `${y}-${m}-${day}`;
-}
-function dateDiff(a,b){const A=new Date(a+"T00:00:00"),B=new Date(b+"T00:00:00");return Math.floor((B-A)/86400000)}
-function calcDay(date=localISO()){return Math.max(1,dateDiff(START_DATE,date)+1)}
-function seeded(day, salt=0){let x=(day*9301+49297+salt*233)%233280;return ()=>{x=(x*9301+49297)%233280;return x/233280}}
-function pick(arr,rng){return arr[Math.floor(rng()*arr.length)]}
-
-function questClone(q,day,type){return {...clone(q),key:`${type}_${q.id}_${day}`,type}}
-function generateRoute(day){
- const rng=seeded(day);
- const mainPool=[...QUESTS.main],sidePool=[...QUESTS.side],microPool=[...QUESTS.micro];
- const main=[];
- // Two main quests with deterministic rotation.
- const m1=mainPool[(day-1)%mainPool.length],m2=mainPool[(day+1)%mainPool.length];
- main.push(questClone(m1,day,"main"),questClone(m2,day,"main"));
- const side=[];
- while(side.length<3){const q=pick(sidePool,rng);if(!side.some(x=>x.id===q.id))side.push(questClone(q,day,"side"))}
- const micro=[];
- while(micro.length<2){const q=pick(microPool,rng);if(!micro.some(x=>x.id===q.id))micro.push(questClone(q,day,"micro"))}
- return [...main,...side,...micro];
-}
-
-function eventForDay(day){
- const events=[
-  {title:"LUCKY BREAK",desc:"A small pocket of time appeared. One quest costs 20% less Energy today.",effect:"energyDiscount"},
-  {title:"SOCIAL INVITATION",desc:"Plans changed. One quest can be adapted without losing Momentum.",effect:"social"},
-  {title:"ACADEMIC CRISIS",desc:"A deadline is near. Your Scholar's Hour becomes a priority, but adaptation remains available.",effect:"academic"},
-  {title:"LOW BATTERY",desc:"Energy is limited. Recovery actions are worth slightly more Momentum.",effect:"low"},
-  {title:"CLEAR WEATHER",desc:"The route feels lighter. Completing 3 quests grants a bonus.",effect:"bonus"},
-  {title:"QUIET WINDOW",desc:"You found a calm hour. Reading or language work grants +10% XP.",effect:"focus"}
- ];
- return events[(day*7+3)%events.length];
-}
-
-function chapterForDay(d){
- if(d<=14)return ["AWAKENING","The system has come online. Build the foundation.","Awakening"];
- if(d<=31)return ["FOUNDATION","Turn isolated actions into a lifestyle.","Foundation"];
- if(d<=61)return ["ASCENSION","Raise the ceiling. Skills start to compound.","Ascension"];
- return ["TRANSFORMATION","The old operating system is losing control.","Transformation"];
-}
-
-function migrate(raw){
- const s=clone(initialState);
- if(!raw)return s;
- Object.assign(s,raw);
- s.version=3;
- s.skills=Object.assign({...SKILLS},raw.skills||{});
- s.done=raw.done||{};
- s.logs=raw.logs||[];
- s.events=raw.events||[];
- s.history=raw.history||[];
- s.stats=Object.assign({...initialState.stats},raw.stats||{});
- s.stats.totalAdapted=s.stats.totalAdapted??s.stats.adapted??0;
- s.stats.adapted=s.stats.adapted??s.stats.totalAdapted??0;
- s.stats.questsByDay=s.stats.questsByDay||{};
- s.achievements=raw.achievements||[];
- s.purchased=raw.purchased||[];
- s.wishlist=raw.wishlist||[];
- return s;
-}
-
-let state=migrate(null);
-
-function loadLocal(){
- try{
-  const raw=localStorage.getItem(STORAGE_KEY);
-  if(raw)return migrate(JSON.parse(raw));
-  // One-time migration from V1.1/V2 browser cache if present.
-  const old=localStorage.getItem("WINTER_ARC_SYSTEM_V1_1");
-  if(old){
-   const s=migrate(JSON.parse(old));
-   s.logs.unshift(time()+" — MIGRATED FROM V2 · V3 ENGINE ONLINE");
-   return s;
-  }
- }catch(e){}
- return migrate(null);
-}
-function persist(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){toast("Local save unavailable — use Export Save.")}}
-function time(){return new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})}
-function log(t){state.logs.unshift(time()+" — "+t);state.logs=state.logs.slice(0,80)}
-function nextXP(){return 100+state.level*35}
-
-function ensureDay(s=state){
- const today=localISO(), target=calcDay(today);
- if(!s.lastDate){
-  s.lastDate=today;s.day=target;s.energy=100;s.todayQuests=generateRoute(target);s.currentEvent=eventForDay(target);
-  log("SYSTEM ONLINE · DAY "+String(target).padStart(2,"0")+" GENERATED");
-  persist();return true;
- }
- if(s.lastDate===today && s.todayQuests?.length)return false;
-
- // Archive the previous route.
- const prevDone=Object.keys(s.done||{}).length;
- s.history=s.history||[];
- s.history.unshift({date:s.lastDate,day:s.day,quests:s.todayQuests||[],done:s.done||{},completed:prevDone});
- s.history=s.history.slice(0,60);
-
- s.day=target;s.lastDate=today;s.energy=100;s.done={};
- s.todayQuests=generateRoute(target);s.currentEvent=eventForDay(target);
- s.bossProgress=0;s.bossCleared=false;
- s.momentum=Math.max(0,Math.min(100,(s.momentum||50)+(prevDone>=4?5:-2)));
- log("NEW DAY GENERATED · "+today+" · DAY "+String(target).padStart(2,"0"));
- persist();
- return true;
-}
-
-function saveAndRender(sync=true){
- persist();checkAchievements();render();
- if(sync && cloudUser)syncNow(true);
-}
-
-function rewardStats(q, factor=1){
- Object.entries(q.stats||{}).forEach(([k,v])=>{state.skills[k]=(state.skills[k]||0)+Math.ceil(v*factor)});
-}
-function completeQuest(key){
- const q=state.todayQuests.find(x=>x.key===key);if(!q||state.done[key])return;
- let energy=q.energy;
- if(state.currentEvent?.effect==="energyDiscount")energy=Math.ceil(energy*.8);
- if(state.energy<energy){toast("Not enough Energy · use ADAPT or a Micro quest.");return}
- state.done[key]="completed";
- let xp=q.xp, coin=q.coin;
- if(state.currentEvent?.effect==="focus" && (q.id==="eng30"||q.id==="chi"||q.id==="read"))xp+=10;
- state.xp+=xp;state.coins+=coin;state.energy=Math.max(0,state.energy-energy);
- state.momentum=Math.min(100,state.momentum+(q.type==="main"?10:6));
- rewardStats(q,1);
- state.stats.totalCompleted++;
- state.stats.questsByDay[state.day]=(state.stats.questsByDay[state.day]||0)+1;
- if(state.day%7===0 && q.type!=="micro")state.bossProgress=Math.min(100,state.bossProgress+25);
- let leveled=false;
- while(state.xp>=nextXP()){state.xp-=nextXP();state.level++;leveled=true}
- if(state.currentEvent?.effect==="bonus" && Object.keys(state.done).length===3){state.xp+=25;state.coins+=10;log("DAILY EVENT BONUS · +25 XP · +10 🪙")}
- log(q.title+" COMPLETE · +"+xp+" XP · +"+coin+" 🪙");
- if(leveled)log("LEVEL UP → LV."+state.level);
- if(state.day%7===0 && state.bossProgress>=100 && !state.bossCleared){state.bossCleared=true;state.stats.bossesCleared++;state.xp+=100;state.coins+=50;log("WEEKLY BOSS CLEARED · +100 XP · +50 🪙");}
- saveAndRender();toast("QUEST CLEARED · +"+xp+" XP");
-}
-function adaptQuest(key){
- const q=state.todayQuests.find(x=>x.key===key);if(!q||state.done[key])return;
- state.done[key]="adapted";
- const xp=Math.ceil(q.xp*.45),coin=Math.ceil(q.coin*.5);
- state.xp+=xp;state.coins+=coin;state.momentum=Math.min(100,state.momentum+3);
- rewardStats(q,.4);
- state.stats.adapted++;state.stats.totalAdapted++;
- log(q.title+" ADAPTED · progress preserved");
- saveAndRender();toast("ADAPTED · progress preserved");
-}
-
-function checkAchievements(){
- ACHIEVEMENTS.forEach(a=>{
-  if(!state.achievements.includes(a.id) && a.check(state)){
-   state.achievements.push(a.id);state.coins+=30;log("ACHIEVEMENT UNLOCKED · "+a.name+" · +30 🪙");
-  }
- });
-}
-function bossAvailable(){return state.day%7===0}
-function bossName(){return "THE WEEKLY WALL · DAY "+state.day}
-function clearBoss(){if(!bossAvailable())return;if(state.bossProgress<100){toast("Boss not cleared yet — complete main quests.");return}state.bossCleared=true;saveAndRender();}
-
-function buy(id){
- const item=SHOP.find(x=>x.id===id);if(!item)return;
- if(state.coins<item.price){toast("Not enough Coins.");return}
- state.coins-=item.price;state.purchased.unshift({id,date:localISO(),day:state.day});log("REWARD CLAIMED · "+item.name+" · -"+item.price+" 🪙");saveAndRender();toast("Reward unlocked 🎁");
-}
-
-function render(){
- const d=state.day, chapter=chapterForDay(d);
- document.getElementById("headerDay").textContent=new Date(state.lastDate+"T00:00:00").toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"}).toUpperCase()+" · DAY "+String(d).padStart(2,"0");
- document.getElementById("level").textContent="LV."+String(state.level).padStart(2,"0");
- document.getElementById("xp").textContent=state.xp;document.getElementById("nextxp").textContent=nextXP();
- document.getElementById("xpbar").style.width=Math.min(100,state.xp/nextXP()*100)+"%";
- document.getElementById("momentum").textContent=state.momentum;document.getElementById("mbar").style.width=state.momentum+"%";
- document.getElementById("energy").textContent=state.energy;document.getElementById("coins").textContent=state.coins;
- document.getElementById("questsDone").textContent=Object.keys(state.done).length+"/7";
- document.getElementById("class").textContent=state.class;
- document.getElementById("chapter").textContent=chapter[0];document.getElementById("chapterDesc").textContent=chapter[1];
- document.getElementById("route").textContent="DAY "+String(d).padStart(2,"0");
- document.getElementById("questBoardDay").textContent="DAY "+String(d).padStart(2,"0");
- document.getElementById("timelineDay").textContent="DAY "+d;
- document.getElementById("dailyBrief").textContent=`${chapter[2].toUpperCase()} ROUTE · ${state.lastDate} · Generated from the real calendar.`;
- const qhtml=state.todayQuests.map(q=>questHTML(q)).join("");
- document.getElementById("dashboardQuests").innerHTML=qhtml;
- document.getElementById("allQuests").innerHTML=qhtml;
- renderEvent();renderSkills();renderShop();renderAchievements();renderProgress();renderSystem();renderLog();updateAuthUI();
-}
-function questHTML(q){
- const st=state.done[q.key];
- return `<div class="quest ${q.type==='boss'?'boss':''}">
-  <div class="quest-main"><div class="icon">${q.icon}</div><div><div class="qtitle">${q.title}</div><div class="qmeta">${q.desc}</div><div class="rewards">+${q.xp} XP · +${q.coin} 🪙 · −${q.energy} Energy · ${q.type.toUpperCase()}</div></div></div>
-  <div>${st?`<span class="status ${st==='adapted'?'adapt':'done'}">${st.toUpperCase()}</span>`:`<span class="status">AVAILABLE</span><div class="actions"><button class="btn primary" onclick="completeQuest('${q.key}')">COMPLETE</button><button class="btn" onclick="adaptQuest('${q.key}')">ADAPT</button></div>`}</div>
- </div>`;
-}
-function renderEvent(){
- const e=state.currentEvent||eventForDay(state.day);
- document.getElementById("eventBox").innerHTML=`<div class="event"><b>${e.title}</b><p>${e.desc}</p></div>`;
-}
-function renderSkills(){
- const order=["Body","English","Chinese","Academic","Knowledge","Lifestyle","Appearance","Career","Finance","Discipline","Communication","Reading"];
- document.getElementById("skillSnapshot").innerHTML=order.slice(0,6).map(s=>skillHTML(s)).join("");
- document.getElementById("allSkills").innerHTML=order.map(s=>skillHTML(s)).join("");
-}
-function skillHTML(s){const v=state.skills[s]||0;return `<div class="skill"><div class="skilltop"><span>${s}</span><b>${v}</b></div><div class="skillbar"><i style="width:${Math.min(100,v)}%"></i></div></div>`}
-function renderShop(){
- document.getElementById("shopCoins").textContent=state.coins;
- document.getElementById("shopGrid").innerHTML=SHOP.map(x=>`<div class="item"><div style="font-size:22px">${x.icon}</div><h3>${x.name}</h3><p>${x.desc}</p><div class="price">🪙 ${x.price}</div><div class="actions"><button class="btn gold" onclick="buy('${x.id}')">CLAIM REWARD</button></div></div>`).join("");
-}
-function renderAchievements(){
- const unlocked=state.achievements.length;
- document.getElementById("achievementCount").textContent=unlocked+"/"+ACHIEVEMENTS.length+" UNLOCKED";
- document.getElementById("achievementList").innerHTML=ACHIEVEMENTS.map(a=>{
-  const ok=state.achievements.includes(a.id);
-  return `<div class="achievement ${ok?'':'locked'}"><div><b>${ok?'🏆':'○'} ${a.name}</b><br><span>${a.desc}</span></div><span>${ok?'UNLOCKED':'LOCKED'}</span></div>`;
- }).join("");
-}
-function renderProgress(){
- const chapter=chapterForDay(state.day);
- document.getElementById("timeline").innerHTML=[
-  ["17 Sep","Awakening",state.day>=1],["1 Oct","Foundation",state.day>=15],["1 Nov","Ascension",state.day>=46],["1 Dec","Transformation",state.day>=76]
- ].map(x=>`<div style="padding:10px 0;border-bottom:1px solid var(--line);font-size:10px;opacity:${x[2]?1:.45}"><b>${x[0]}</b> · ${x[1]}</div>`).join("");
- document.getElementById("bossStatus").textContent=bossAvailable()?"BOSS DAY":"NEXT AT DAY "+(Math.floor(state.day/7)*7+7);
- const bp=bossAvailable()?state.bossProgress:0;
- document.getElementById("bossCard").innerHTML=`<div class="event"><b>⚔ ${bossAvailable()?bossName():"WEEKLY BOSS LOCKED"}</b><p>${bossAvailable()?"Complete meaningful quests today to fill the boss bar.":"Every 7th day becomes a boss encounter."}</p><div style="margin-top:10px;height:9px;background:#e6e3da;border-radius:99px"><div style="height:100%;width:${bp}%;background:var(--gold);border-radius:99px"></div></div><div style="font-size:9px;color:var(--muted);margin-top:5px">${bp}% complete</div>${bossAvailable()&&bp>=100&&!state.bossCleared?'<div class="actions"><button class="btn gold" onclick="clearBoss()">CLEAR BOSS</button></div>':''}${state.bossCleared?'<div class="rewards" style="margin-top:7px">BOSS CLEARED · +100 XP · +50 🪙</div>':''}</div>`;
- const order=["Body","English","Chinese","Academic","Knowledge","Lifestyle","Appearance","Career","Finance","Discipline","Communication","Reading"];
- document.getElementById("progressStats").innerHTML=order.map(s=>`<div class="progress-row"><span>${s}</span><div class="progressbar"><i style="width:${Math.min(100,state.skills[s]||0)}%"></i></div><b>${state.skills[s]||0}</b></div>`).join("");
-}
-function renderSystem(){
- document.getElementById("systemInfo").innerHTML=[
-  ["ENGINE","V3 · Calendar + Quest + Cloud"],
-  ["REAL DATE",state.lastDate],
-  ["ARC DAY","Day "+state.day],
-  ["TODAY ROUTE",state.todayQuests.length+" quests"],
-  ["CLOUD",cloudUser?"CONNECTED":"NOT CONNECTED"],
-  ["LOCAL CACHE","ACTIVE"],
-  ["ACHIEVEMENTS",state.achievements.length+" unlocked"],
-  ["HISTORY",state.history.length+" archived days"]
- ].map(x=>`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);font-size:10px"><span style="color:var(--muted)">${x[0]}</span><b>${x[1]}</b></div>`).join("");
-}
+const START_DATE="2026-09-17", STORAGE_KEY="WINTER_ARC_SYSTEM_V4", V3_KEY="WINTER_ARC_SYSTEM_V3";
+const DOMAINS=["English","Chinese","Body","Academic","Knowledge","Lifestyle","Appearance","Career","Finance","Discipline","Communication","Reading"];
+const ICON={English:"🇬🇧",Chinese:"🇨🇳",Body:"🏋🏻",Academic:"🎓",Knowledge:"🌐",Lifestyle:"🌙",Appearance:"✨",Career:"💼",Finance:"💰",Discipline:"🔥",Communication:"🗣️",Reading:"📖"};
+const SUBSKILLS={English:["Speaking","Listening","Reading","Writing","Vocabulary","Fluency"],Chinese:["Speaking","Listening","Reading","Writing","Vocabulary","Pronunciation"],Body:["Movement","Strength","Endurance","Mobility","Recovery"],Academic:["Study System","Research","Writing","Critical Thinking","Presentation"],Knowledge:["IR Awareness","Policy Analysis","World Affairs","Synthesis"],Lifestyle:["Sleep","Environment","Recovery","Routine"],Appearance:["Skincare","Hair","Style","Grooming"],Career:["CV","Networking","Professional Skills","Personal Brand"],Finance:["Tracking","Budgeting","Saving","Investing Basics"],Discipline:["Starting","Consistency","Deep Work","Recovery"],Communication:["Conversation","Confidence","Presentation","Social Courage"],Reading:["Consistency","Comprehension","Analysis","Synthesis"]};
+const GOAL_WEIGHT={English:92,Chinese:86,Body:90,Academic:78,Knowledge:70,Lifestyle:62,Appearance:50,Career:65,Finance:45,Discipline:72,Communication:66,Reading:55};
+const Q=[
+["eng_speak","English","Speaking","🎙️","THE SPEAKER","Speak or shadow in English",25,"standard",14,32,12,["Communication"],2],["eng_listen","English","Listening","🎧","THE LISTENER","Listen actively and capture 5 useful phrases",20,"easy",9,22,8,[],2],["eng_write","English","Writing","✍️","THE WRITER","Write a focused English paragraph or IELTS response",30,"hard",18,40,15,["Academic"],3],["eng_real","English","Fluency","🌍","REAL CONVERSATION","Hold a real or AI English conversation without switching languages",30,"challenge",22,52,22,["Communication"],4],
+["chi_vocab","Chinese","Vocabulary","📝","MANDARIN CACHE","Review and use a small HSK vocabulary set",15,"easy",8,20,7,[],2],["chi_listen","Chinese","Listening","🎧","MANDARIN LISTENER","Listen to Chinese and catch 5 phrases",15,"standard",10,26,9,[],2],["chi_speak","Chinese","Speaking","🐉","MANDARIN TRIAL","Speak 10–15 Chinese sentences aloud",20,"standard",12,30,11,["Communication"],2],["chi_shadow","Chinese","Pronunciation","🗣️","TONE FORGE","Shadow native Chinese audio carefully",15,"hard",12,32,12,[],3],
+["body_move","Body","Movement","🚶","MOVE THE BODY","30 minutes of intentional movement",30,"standard",16,34,12,["Lifestyle"],1],["body_strength","Body","Strength","🏋🏻","STRENGTH TRIAL","Complete a focused strength session",45,"hard",24,50,18,["Discipline"],2],["body_core","Body","Strength","🔥","CORE FORGE","Complete a focused core session",20,"standard",12,28,10,["Discipline"],2],["body_mobility","Body","Mobility","🧘","MOBILITY RESET","Stretch and restore mobility",10,"easy",5,16,6,["Lifestyle"],1],
+["acad_deep","Academic","Study System","🎓","SCHOLAR'S HOUR","One focused deep-work block",45,"hard",24,48,18,["Discipline"],2],["acad_research","Academic","Research","🔬","RESEARCH MOVE","Make one concrete research advance",35,"hard",20,44,17,["Knowledge"],3],["acad_write","Academic","Writing","🖋️","ACADEMIC OUTPUT","Produce a meaningful piece of academic writing",35,"challenge",22,52,20,["Knowledge"],3],
+["know_ir","Knowledge","IR Awareness","🌐","DIPLOMAT'S EYE","Read one IR/foreign-policy piece and capture 3 insights",25,"standard",12,30,11,["Reading"],3],["know_policy","Knowledge","Policy Analysis","🧭","POLICY LENS","Compare interests, trade-offs or policy choices",30,"hard",16,40,15,["Academic"],4],["read15","Reading","Consistency","📖","PAGE TURNER","Read 15 pages of a chosen book",25,"standard",9,24,9,[],2],
+["life_reset","Lifestyle","Environment","🗂️","LIFE RESET","10-minute reset of your space and tomorrow setup",10,"easy",4,14,5,["Discipline"],1],["life_sleep","Lifestyle","Sleep","🌙","SLEEP PROTOCOL","Begin your intended bedtime routine",10,"easy",2,14,5,["Discipline"],1],["appear","Appearance","Grooming","🪞","POLISHED SELF","Complete one intentional skincare, hair or styling action",15,"easy",4,15,6,[],1],["career","Career","Professional Skills","💼","CAREER MOVE","Take one concrete CV, opportunity or professional step",25,"standard",10,30,12,["Communication"],3],["finance","Finance","Tracking","💰","MONEY AWARENESS","Review spending, budget or savings intentionally",10,"easy",4,15,6,[],2],["comm","Communication","Conversation","🗣️","SOCIAL REP","Have one meaningful conversation or communication rep",15,"standard",7,24,9,[],2],
+["micro_water","Lifestyle","Routine","💧","HYDRATE","Drink a full glass of water now",5,"micro",0,5,2,[],0],["micro_stretch","Body","Mobility","🌱","RESET BREATH","Five minutes of stretch or breathing",5,"micro",2,8,3,["Lifestyle"],0],["micro_words","English","Vocabulary","📝","WORD DROP","Learn and use five English or Chinese words",5,"micro",2,7,3,["Chinese"],0],["micro_check","Discipline","Recovery","✍️","SYSTEM CHECK-IN","Write three lines: win, lesson, next move",5,"micro",1,8,3,[],0]
+].map(x=>({id:x[0],skill:x[1],sub:x[2],icon:x[3],title:x[4],desc:x[5],duration:x[6],difficulty:x[7],energy:x[8],xp:x[9],coin:x[10],secondary:x[11],cooldown:x[12]}));
+const SHOP=[{id:"treat",icon:"☕",name:"Small Treat",desc:"Coffee, matcha, dessert or a small comfort",price:90},{id:"selfdate",icon:"🎬",name:"Self-Date",desc:"Movie, café, museum or solo outing",price:220},{id:"beauty",icon:"✨",name:"Beauty Drop",desc:"A planned beauty or self-care reward",price:360},{id:"rare",icon:"🎁",name:"Rare Reward",desc:"A deliberately chosen meaningful reward",price:650}];
+const ACH=[
+["first","FIRST STEP","Milestone","Complete your first quest",30,20,s=>s.stats.totalCompleted>=1],["five","GETTING SERIOUS","Milestone","Complete 5 quests",40,25,s=>s.stats.totalCompleted>=5],["twenty","QUEST HUNTER","Milestone","Complete 20 quests",80,50,s=>s.stats.totalCompleted>=20],["fifty","THE ROUTINE IS REAL","Milestone","Complete 50 quests",140,90,s=>s.stats.totalCompleted>=50],["hundred","CENTURION","Epic","Complete 100 quests",250,160,s=>s.stats.totalCompleted>=100],["route","DAY CLEARED","Consistency","Clear a full recommended route",70,45,s=>s.stats.routesCleared>=1],["week","SEVEN DAYS ACTIVE","Consistency","Be active on 7 different days",100,70,s=>activeDays(s)>=7],["month","THIRTY DAYS OF RETURNING","Legendary","Be active on 30 different days",350,250,s=>activeDays(s)>=30],["adapt","ADAPTIVE MIND","Recovery","Adapt a quest",50,30,s=>s.stats.adapted>=1],["return","THE RETURNER","Recovery","Return after an interrupted day",120,80,s=>s.stats.comebacks>=1],["self","SELF-DIRECTED","Behavior","Complete 5 self-selected/personal quests",100,70,s=>s.stats.selfSelected>=5],["push","THE CHALLENGER","Challenge","Complete 5 hard/challenge quests",120,80,s=>s.stats.hardCompleted>=5],["lvl5","LEVEL FIVE","Milestone","Reach Level 5",100,60,s=>s.level>=5],["lvl10","DOUBLE DIGIT LEVEL","Epic","Reach Level 10",220,140,s=>s.level>=10],["specialist","SPECIALIST","Mastery","Reach Skill Level 5 in any skill",130,90,s=>DOMAINS.some(k=>skillLevel(s.skills[k]||0)>=5)],["poly","WELL-ROUNDED","Mastery","Reach Skill Level 3 in six skills",180,120,s=>DOMAINS.filter(k=>skillLevel(s.skills[k]||0)>=3).length>=6],["boss","BOSS BREAKER","Boss","Clear a weekly boss",150,100,s=>s.stats.bossesCleared>=1],["boss4","FALLEN SELF HUNTER","Epic","Clear four bosses",300,200,s=>s.stats.bossesCleared>=4],["day30","THE ARC IS REAL","Story","Reach Day 30",180,120,s=>s.day>=30],["hidden","???","Hidden","A hidden achievement waits for unusual persistence",250,150,s=>s.stats.comebacks>=3]
+].map(x=>({id:x[0],name:x[1],tier:x[2],desc:x[3],xp:x[4],coin:x[5],check:x[6],hidden:x[0]==="hidden"}));
+const initial={version:4,startDate:START_DATE,lastDate:null,day:1,level:1,xp:0,momentum:50,energy:100,coins:0,class:"UNDEFINED",todayQuests:[],bonusQuests:[],done:{},skills:Object.fromEntries(DOMAINS.map(k=>[k,0])),subskills:{},logs:[],history:[],stats:{totalCompleted:0,adapted:0,bossesCleared:0,routesCleared:0,selfSelected:0,hardCompleted:0,comebacks:0,questsByDay:{}},achievements:[],purchased:[],wishlist:[],loginDates:[],questHistory:[],currentEvent:null,bossProgress:0,bossCleared:false,music:false};
+let state,cloud=null,cloudUser=null,cloudReady=false,filter="ALL";
+try{if(window.SUPABASE_CONFIG?.url&&window.SUPABASE_CONFIG?.anonKey){cloud=supabase.createClient(window.SUPABASE_CONFIG.url,window.SUPABASE_CONFIG.anonKey);cloudReady=true}}catch(e){console.warn(e)}
+const clone=o=>JSON.parse(JSON.stringify(o));
+function localISO(){let d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function diff(a,b){return Math.floor((new Date(b+"T00:00:00")-new Date(a+"T00:00:00"))/86400000)} function calcDay(d=localISO()){return Math.max(1,diff(START_DATE,d)+1)}
+function rng(seed){let x=seed%2147483647;if(x<=0)x+=2147483646;return()=>((x=x*16807%2147483647)-1)/2147483646}
+function nextXP(){return 100+state.level*35} function skillLevel(v){return Math.floor(Math.sqrt((v||0)/80))+1} function subUnlockLevel(i){return 1+i*2}
+function time(){return new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})} function log(t){state.logs.unshift(time()+" — "+t);state.logs=state.logs.slice(0,100)}
+function chapter(d){if(d<=14)return["AWAKENING","The old routine no longer feels enough."];if(d<=45)return["FOUNDATION","A new life requires structure."];if(d<=75)return["ASCENSION","You are no longer experimenting. You are becoming."];return["TRANSFORMATION","The old default is losing control."]}
+function eventForDay(d){let e=[{title:"QUIET WINDOW",desc:"A calm pocket of time appears. Knowledge and language quests feel especially fitting today."},{title:"AUTUMN LETTER",desc:"The season is moving. Notice one small way your routine has changed."},{title:"CLEAR WEATHER",desc:"A lighter day. The System encourages exploration after the Daily Route."},{title:"WINTER STORM",desc:"Capacity may be lower. A Minimum Viable Day still counts."},{title:"THE FIRST EXCUSE",desc:"The Fallen Self whispers: “Tomorrow.” One meaningful action is enough to answer it."},{title:"OPEN PATH",desc:"Player choice is favored today. A self-selected quest is still real progress."}];return e[(d*11+5)%e.length]}
+function dailyMode(){if(state.energy<=35||state.momentum<30)return["🌱","RECOVERY"];if(state.day%7===0)return["⚔","BOSS"];if(state.momentum>=78&&state.energy>=75)return["🔥","PUSH"];return["⚖","NORMAL"]}
+function questRecent(id,days=3){return (state.questHistory||[]).some(h=>h.id===id&&state.day-h.day<=days)}
+function priority(q){let score=GOAL_WEIGHT[q.skill]||50;let last=(state.questHistory||[]).filter(h=>h.skill===q.skill).sort((a,b)=>b.day-a.day)[0];if(!last)score+=12;else score+=Math.min(24,(state.day-last.day)*5);if(questRecent(q.id,q.cooldown))score-=30;let sl=skillLevel(state.skills[q.skill]||0);score+=Math.max(0,8-sl);if(q.energy>state.energy*.45)score-=25;if(q.difficulty==="micro")score-=18;let recentSame=(state.questHistory||[]).filter(h=>h.sub===q.sub&&state.day-h.day<=4).length;score-=recentSame*7;return score}
+function availableQuest(q){let idx=SUBSKILLS[q.skill]?.indexOf(q.sub)??0;return state.level>=subUnlockLevel(Math.max(0,idx))}
+function makeQuest(q,type,day,source="system"){let m=dailyMode()[1],factor=1;if(m==="RECOVERY"&&q.difficulty!=="micro")factor=.75;if(m==="PUSH"&&(q.difficulty==="standard"||q.difficulty==="hard"))factor=1.12;return {...clone(q),key:`${source}_${q.id}_${day}_${Math.random().toString(36).slice(2,6)}`,type,source,xp:Math.round(q.xp*factor),energy:Math.round(q.energy*factor)}}
+function generateRoute(day){let r=rng(day*9173),pool=Q.filter(q=>availableQuest(q)&&q.difficulty!=="micro").map(q=>({q,score:priority(q)+r()*18})).sort((a,b)=>b.score-a.score);let selected=[],used=new Set();function take(label,n,predicate=()=>true){for(let x of pool){if(selected.filter(z=>z.type===label).length>=n)break;if(used.has(x.q.id)||!predicate(x.q))continue;if(label==="priority"&&selected.some(z=>z.type==="priority"&&z.skill===x.q.skill))continue;selected.push(makeQuest(x.q,label,day));used.add(x.q.id)}} take("priority",2);take("balance",3);let surprise=pool.filter(x=>!used.has(x.q.id)&&!questRecent(x.q.id,4));if(surprise.length){let x=surprise[Math.floor(r()*surprise.length)];selected.push(makeQuest(x.q,"surprise",day));used.add(x.q.id)}let micros=Q.filter(q=>q.difficulty==="micro");selected.push(makeQuest(micros[Math.floor(r()*micros.length)],"maintenance",day));return selected.slice(0,7)}
+function migrate(raw){let s=clone(initial);if(!raw)return s;Object.assign(s,raw);s.version=4;s.skills=Object.assign(clone(initial.skills),raw.skills||{});s.subskills=raw.subskills||{};s.stats=Object.assign(clone(initial.stats),raw.stats||{});s.stats.adapted=s.stats.adapted??raw.stats?.totalAdapted??0;s.todayQuests=raw.todayQuests||[];s.bonusQuests=raw.bonusQuests||[];s.done=raw.done||{};s.history=raw.history||[];s.logs=raw.logs||[];s.achievements=raw.achievements||[];s.wishlist=raw.wishlist||[];s.loginDates=raw.loginDates||[];s.questHistory=raw.questHistory||[];return s}
+function loadLocal(){try{let v=localStorage.getItem(STORAGE_KEY);if(v)return migrate(JSON.parse(v));let old=localStorage.getItem(V3_KEY);if(old){let s=migrate(JSON.parse(old));s.logs.unshift(time()+" — V3 SAVE MIGRATED · V4 ENGINE ONLINE");return s}}catch(e){}return migrate(null)}
+function persist(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){toast("Local save unavailable — export a backup.")}}
+function ensureDay(s=state){let today=localISO(),target=calcDay(today);if(!s.lastDate){s.lastDate=today;s.day=target;s.energy=100;s.done={};s.todayQuests=generateRoute(target);s.currentEvent=eventForDay(target);log("V4 ONLINE · DAY "+target);persist();return true}if(s.lastDate===today&&s.todayQuests?.length)return false;let completed=Object.values(s.done||{}).filter(v=>v!=="skipped").length;s.history.unshift({date:s.lastDate,day:s.day,completed,route:(s.todayQuests||[]).length,effort:completed});s.history=s.history.slice(0,120);if(completed===0&&s.lastDate) s.stats.comebacks=(s.stats.comebacks||0)+1;s.day=target;s.lastDate=today;s.energy=100;s.done={};s.bonusQuests=[];s.todayQuests=generateRoute(target);s.currentEvent=eventForDay(target);s.bossProgress=0;s.bossCleared=false;s.momentum=Math.max(0,Math.min(100,s.momentum+(completed>=4?5:completed?1:-4)));log("NEW DAY · DAY "+target+" · ROUTE GENERATED");persist();return true}
+function activeDays(s){let set=new Set((s.questHistory||[]).map(x=>x.day));if(Object.keys(s.done||{}).length)set.add(s.day);return set.size}
+function addSkill(q,f=1){state.skills[q.skill]=(state.skills[q.skill]||0)+Math.ceil((q.xp*.65)*f);state.subskills[q.skill]=state.subskills[q.skill]||{};state.subskills[q.skill][q.sub]=(state.subskills[q.skill][q.sub]||0)+Math.ceil((q.xp*.5)*f);(q.secondary||[]).slice(0,2).forEach(k=>state.skills[k]=(state.skills[k]||0)+Math.ceil(q.xp*.18*f))}
+function levelCheck(){let up=false;while(state.xp>=nextXP()){state.xp-=nextXP();state.level++;up=true;log("LEVEL UP → LV."+state.level)}if(up)toast("LEVEL UP · New skill nodes may be available ❄")}
+function completeQuest(key,status="completed"){let q=[...state.todayQuests,...state.bonusQuests].find(x=>x.key===key);if(!q||state.done[key])return;let f=status==="perfect"?1.1:status==="adapted"?.75:status==="partial"?.5:1;let extraIndex=state.bonusQuests.findIndex(x=>x.key===key),diminish=extraIndex>=3?.75:extraIndex>=6?.5:1;let energy=Math.ceil(q.energy*(status==="adapted"?.55:f));if(state.energy<energy&&status!=="adapted"){toast("Energy is low · choose ADAPT instead.");return}state.done[key]=status;let xp=Math.ceil(q.xp*f*diminish),coin=Math.ceil(q.coin*f*diminish);state.xp+=xp;state.coins+=coin;state.energy=Math.max(0,state.energy-energy);state.momentum=Math.min(100,state.momentum+(q.type==="priority"?6:3));addSkill(q,f);state.stats.totalCompleted++;if(status==="adapted")state.stats.adapted++;if(q.source!=="system")state.stats.selfSelected++;if(["hard","challenge"].includes(q.difficulty))state.stats.hardCompleted++;state.stats.questsByDay[state.day]=(state.stats.questsByDay[state.day]||0)+1;state.questHistory.push({id:q.id,skill:q.skill,sub:q.sub,day:state.day,date:state.lastDate,status,source:q.source});if(state.day%7===0&&q.difficulty!=="micro")state.bossProgress=Math.min(100,state.bossProgress+20);levelCheck();let routeDone=state.todayQuests.every(x=>state.done[x.key]);if(routeDone&&!state.routeClearDate){state.routeClearDate=state.lastDate;state.stats.routesCleared++;state.xp+=25;state.coins+=15;log("DAILY ROUTE CLEARED · +25 XP · +15 🪙")}if(state.day%7===0&&state.bossProgress>=100&&!state.bossCleared){state.bossCleared=true;state.stats.bossesCleared++;state.xp+=120;state.coins+=70;log("BOSS CLEARED · THE FALLEN SELF LOSES GROUND")}log(q.title+" · "+status.toUpperCase()+" · +"+xp+" XP");saveAndRender();toast("QUEST CLEARED · +"+xp+" XP · +"+coin+" 🪙")}
+function adaptQuest(k){completeQuest(k,"adapted")} function partialQuest(k){completeQuest(k,"partial")}
+function claimLogin(){if(state.loginDates.includes(state.lastDate))return;let streak=1;let dates=[...state.loginDates].sort();if(dates.length&&diff(dates[dates.length-1],state.lastDate)===1)streak=Math.min(7,(state.loginStreak||1)+1);state.loginStreak=streak;state.loginDates.push(state.lastDate);let xp=8+streak*2,coin=5+streak*2;state.xp+=xp;state.coins+=coin;log("DAILY CHECK-IN · DAY "+streak+" · +"+xp+" XP");saveAndRender();toast("DAILY REWARD CLAIMED 🎁")}
+function surpriseMe(){let candidates=Q.filter(q=>availableQuest(q)&&!questRecent(q.id,2));let q=candidates[Math.floor(Math.random()*candidates.length)];let b=makeQuest(q,"bonus",state.day,"surprise");state.bonusQuests.push(b);log("SURPRISE QUEST DISCOVERED · "+b.title);saveAndRender();openModal("🎲 SYSTEM SELECTED",questHTML(b))}
+function addBoardQuest(id){let q=Q.find(x=>x.id===id);if(!q)return;let b=makeQuest(q,"bonus",state.day,"player");state.bonusQuests.push(b);saveAndRender();toast("Quest accepted · added to Bonus Quests")}
+function openPersonalQuest(){openModal("＋ PERSONAL QUEST",`<input class="input" id="pqName" placeholder="Quest name"><select class="input" id="pqSkill">${DOMAINS.map(x=>`<option>${x}</option>`).join("")}</select><div class="two"><input class="input" id="pqMin" type="number" value="20" min="5" placeholder="Minutes"><select class="input" id="pqDiff"><option>easy</option><option selected>standard</option><option>hard</option><option>challenge</option></select></div><button class="btn primary" onclick="createPersonalQuest()">CREATE & ACCEPT</button>`)}
+function createPersonalQuest(){let title=document.getElementById("pqName").value.trim();if(!title)return;let skill=document.getElementById("pqSkill").value,min=+document.getElementById("pqMin").value||20,diffi=document.getElementById("pqDiff").value,m={easy:.8,standard:1,hard:1.3,challenge:1.6}[diffi];let q={id:"personal_"+Date.now(),skill,sub:SUBSKILLS[skill][0],icon:ICON[skill],title:title.toUpperCase(),desc:"Player-created personal quest",duration:min,difficulty:diffi,energy:Math.round(Math.min(30,4+min*.35)*m),xp:Math.round((12+Math.sqrt(min)*4)*m),coin:Math.round((5+Math.sqrt(min)*1.5)*m),secondary:[],cooldown:0};state.bonusQuests.push(makeQuest(q,"bonus",state.day,"personal"));closeModal();saveAndRender();toast("Personal quest accepted")}
+function detectClass(){if(state.stats.totalCompleted<12)return["UNDEFINED","Complete more quests for identity analysis."];let s=state.skills,pairs=[["THE DIPLOMAT",(s.English+s.Chinese+s.Knowledge+s.Communication)/4],["THE SCHOLAR",(s.Academic+s.Knowledge+s.Reading+s.Discipline)/4],["THE ATHLETE",(s.Body+s.Discipline+s.Lifestyle)/3],["THE PROFESSIONAL",(s.Career+s.Communication+s.Discipline+s.Finance)/4],["THE WELL-ROUNDED",DOMAINS.reduce((a,k)=>a+s[k],0)/DOMAINS.length]];pairs.sort((a,b)=>b[1]-a[1]);return[pairs[0][0],"Detected from your real behavior — it never locks your route."]}
+function traits(){let a=[];if(state.stats.adapted>=3)a.push("ADAPTIVE");if(state.stats.comebacks>=1)a.push("THE RETURNER");if(state.stats.selfSelected>=5)a.push("SELF-DIRECTED");if(state.stats.hardCompleted>=5)a.push("CHALLENGER");if(activeDays(state)>=7)a.push("CONSISTENT");if(state.skills.Reading>=250)a.push("DEEP READER");return a}
+function checkAchievements(){let changed=false;ACH.forEach(a=>{if(!state.achievements.includes(a.id)&&a.check(state)){state.achievements.push(a.id);state.xp+=a.xp;state.coins+=a.coin;log("ACHIEVEMENT · "+a.name+" · +"+a.xp+" XP · +"+a.coin+" 🪙");changed=true}});if(changed)persist()}
+function addWish(){let name=document.getElementById("wName").value.trim(),price=+document.getElementById("wPrice").value||500,img=document.getElementById("wImage").files[0];if(!name)return;let finish=src=>{state.wishlist.push({id:"wish_"+Date.now(),name,price,img:src||""});closeModal();saveAndRender();toast("Wish added to Reward Pool")};if(img){if(img.size>700000){toast("Please choose an image under 700 KB.");return}let r=new FileReader();r.onload=()=>finish(r.result);r.readAsDataURL(img)}else finish("")}
+function openWishlist(){openModal("🎁 ADD TO WISHLIST",`<input class="input" id="wName" placeholder="Reward name"><input class="input" id="wPrice" type="number" value="500" min="20" placeholder="Coin cost"><input class="input" id="wImage" type="file" accept="image/*"><button class="btn primary" onclick="addWish()">ADD TO REWARD POOL</button>`)}
+function claimWish(id){let w=state.wishlist.find(x=>x.id===id);if(!w||state.coins<w.price){toast("Not enough Coins yet.");return}state.coins-=w.price;state.purchased.unshift({id:w.id,name:w.name,date:state.lastDate,price:w.price});log("REAL-LIFE REWARD UNLOCKED · "+w.name);saveAndRender();toast("REWARD UNLOCKED 🎁")}
+function buy(id){let x=SHOP.find(a=>a.id===id);if(state.coins<x.price){toast("Not enough Coins.");return}state.coins-=x.price;state.purchased.unshift({id,date:state.lastDate,price:x.price});saveAndRender();toast("Reward unlocked 🎁")}
+function questHTML(q,board=false){let st=state.done[q.key],rar=["challenge"].includes(q.difficulty)?"epic":q.difficulty==="hard"?"rare":"";return `<div class="quest"><div class="quest-main"><div class="icon">${q.icon}</div><div><div class="route-type">${q.type.toUpperCase()} · ${q.skill} / ${q.sub}</div><div class="qtitle">${q.title}<span class="rarity ${rar}">${q.difficulty.toUpperCase()}</span></div><div class="qmeta">${q.desc} · ${q.duration} min</div><div class="rewards">+${q.xp} XP · +${q.coin} 🪙 · −${q.energy} Energy</div></div></div><div>${board?`<button class="btn primary" onclick="addBoardQuest('${q.id}')">ACCEPT</button>`:st?`<span class="status ${st==='adapted'?'adapt':'done'}">${st.toUpperCase()}</span>`:`<div class="actions"><button class="btn primary" onclick="completeQuest('${q.key}')">COMPLETE</button><button class="btn" onclick="adaptQuest('${q.key}')">ADAPT</button><button class="btn" onclick="partialQuest('${q.key}')">PARTIAL</button></div>`}</div></div>`}
+function render(){let c=chapter(state.day),cls=detectClass();state.class=cls[0];document.getElementById("headerDay").textContent=new Date(state.lastDate+"T00:00:00").toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"}).toUpperCase()+" · DAY "+String(state.day).padStart(2,"0");let h=new Date().getHours();document.getElementById("greeting").textContent=(h<12?"Good morning":h<18?"Good afternoon":"Good evening")+", Eleanor.";let dm=dailyMode();document.getElementById("dailyMode").textContent=dm[0]+" "+dm[1]+" DAY";document.getElementById("welcomeLine").textContent=dm[1]==="RECOVERY"?"Today asks for continuity, not intensity.":dm[1]==="PUSH"?"Momentum is strong. A challenge is available.":"A new day has entered the system.";document.getElementById("level").textContent="LV."+String(state.level).padStart(2,"0");document.getElementById("class").textContent=state.class;document.getElementById("xp").textContent=state.xp;document.getElementById("nextxp").textContent=nextXP();document.getElementById("xpbar").style.width=Math.min(100,state.xp/nextXP()*100)+"%";document.getElementById("momentum").textContent=state.momentum;document.getElementById("energy").textContent=state.energy;document.getElementById("coins").textContent=state.coins;let rd=state.todayQuests.filter(x=>state.done[x.key]).length;document.getElementById("questsDone").textContent=rd+"/"+state.todayQuests.length;document.getElementById("chapter").textContent=c[0];document.getElementById("chapterDesc").textContent=c[1];document.getElementById("route").textContent="DAY "+String(state.day).padStart(2,"0");document.getElementById("dailyBrief").textContent=`SYSTEM RECOMMENDS · ${state.todayQuests.length} quests · ${state.bonusQuests.length} bonus accepted · ${dm[1]} mode`;document.getElementById("dashboardQuests").innerHTML=state.todayQuests.map(q=>questHTML(q)).join("")+(state.bonusQuests.length?`<div class="section-title" style="margin-top:18px"><h2>Bonus Quests</h2><span class="pill">OPEN WORLD</span></div>`+state.bonusQuests.map(q=>questHTML(q)).join(""):"");renderLogin();renderEvent();renderBetter();renderSkills();renderBoard();renderShop();renderAchievements();renderProgress();renderSystem();renderLog();updateAuthUI();document.getElementById("musicBtn").textContent=state.music?"♫ MUSIC ON":"♫ MUSIC OFF"}
+function renderLogin(){let claimed=state.loginDates.includes(state.lastDate),streak=state.loginStreak||0;document.getElementById("loginStatus").textContent=claimed?"CLAIMED":"AVAILABLE";document.getElementById("loginBox").innerHTML=`<div class="big-number">DAY ${Math.max(1,streak+(claimed?0:1))}</div><p class="subtle">Daily rewards celebrate returning, not perfection. Missing a day never removes XP.</p>${claimed?'<span class="status done">CHECKED IN</span>':'<button class="btn gold" onclick="claimLogin()">CLAIM DAILY REWARD</button>'}`}
+function renderEvent(){let e=state.currentEvent||eventForDay(state.day);document.getElementById("eventBox").innerHTML=`<div class="event"><b>${e.title}</b><p>${e.desc}</p></div>${state.day%7===0?'<div class="event boss"><b>⚔ THE FALLEN SELF · BOSS ENCOUNTER</b><p>Complete meaningful quests. Progress, not suffering, weakens the old default.</p></div>':''}`}
+function renderBetter(){let y=state.history[0],today=Object.values(state.done).filter(x=>x!=="skipped").length;document.getElementById("betterBox").innerHTML=`<div class="better"><div><div class="subtle">YESTERDAY</div><b>${y?y.completed:0} actions</b></div><div><div class="subtle">TODAY</div><b>${today} actions</b></div></div><p class="subtle">${!y?"Your baseline is being built.":today>y.completed?"You have moved beyond yesterday's action count.":"Better does not always mean more. Recovery and depth still count."}</p>`}
+function renderSkills(){let order=[...DOMAINS].sort((a,b)=>(state.skills[b]||0)-(state.skills[a]||0));document.getElementById("skillSnapshot").innerHTML=order.slice(0,6).map(skillLine).join("");document.getElementById("allSkills").innerHTML=order.map(k=>{let lv=skillLevel(state.skills[k]||0),nodes=SUBSKILLS[k].map((n,i)=>`<div class="skill-node ${state.level>=subUnlockLevel(i)?'':'locked'}"><span>${state.level>=subUnlockLevel(i)?'●':'🔒'} ${n}</span><div class="progressbar"><i style="width:${Math.min(100,(state.subskills[k]?.[n]||0)%100)}%"></i></div><span>LV ${subUnlockLevel(i)}</span></div>`).join("");return `<div style="margin-bottom:18px"><b>${ICON[k]} ${k} · Skill LV.${lv}</b>${nodes}</div>`}).join("");let cl=detectClass(),tr=traits();document.getElementById("characterBox").innerHTML=`<div class="class-card"><div class="subtle">SYSTEM-DETECTED CLASS</div><div class="big-number">${cl[0]}</div><p class="subtle">${cl[1]}</p></div><div style="margin-top:12px"><b>Overall Level ${state.level}</b><p class="subtle">Skill nodes unlock progressively with your overall level. Your class never locks other paths.</p></div>`;document.getElementById("traitsBox").innerHTML=tr.length?tr.map(x=>`<span class="pill" style="display:inline-block;margin:4px">✦ ${x}</span>`).join(""):'<div class="empty">Traits will emerge from repeated behavior.</div>'}
+function skillLine(k){let v=state.skills[k]||0,lv=skillLevel(v);return `<div class="skill"><div class="skilltop"><span>${ICON[k]} ${k}</span><b>LV.${lv} · ${v} XP</b></div><div class="skillbar"><i style="width:${Math.min(100,v%100)}%"></i></div></div>`}
+function renderBoard(){document.getElementById("questBoardDay").textContent="DAY "+state.day;document.getElementById("questFilters").innerHTML=["ALL",...DOMAINS].map(x=>`<button class="filter ${filter===x?'active':''}" onclick="setFilter('${x}')">${x}</button>`).join("");let list=Q.filter(q=>q.difficulty!=="micro"&&(filter==="ALL"||q.skill===filter));document.getElementById("allQuests").innerHTML=list.map(q=>availableQuest(q)?questHTML({...q,type:"explore"},true):`<div class="quest lockedq"><div class="quest-main"><div class="icon">🔒</div><div><div class="qtitle">${q.title}</div><div class="qmeta">${q.skill} / ${q.sub} · unlocks as your overall level rises</div></div></div><span class="status">LOCKED</span></div>`).join("")}
+function setFilter(x){filter=x;renderBoard()}
+function renderShop(){document.getElementById("shopCoins").textContent=state.coins;document.getElementById("shopGrid").innerHTML=SHOP.map(x=>`<div class="item"><div style="font-size:22px">${x.icon}</div><h3>${x.name}</h3><p>${x.desc}</p><div class="price">🪙 ${x.price}</div><button class="btn gold" onclick="buy('${x.id}')">CLAIM</button></div>`).join("");document.getElementById("wishlist").innerHTML=state.wishlist.length?state.wishlist.map(w=>`<div class="wishlist-card">${w.img?`<img class="wishimg" src="${w.img}">`:`<div class="wishimg" style="display:grid;place-items:center">🎁</div>`}<div><b>${w.name}</b><div class="subtle">${Math.min(100,Math.floor(state.coins/w.price*100))}% funded · ${state.coins}/${w.price} 🪙</div><div class="progressbar" style="margin-top:6px"><i style="width:${Math.min(100,state.coins/w.price*100)}%"></i></div></div><div><button class="btn gold" onclick="claimWish('${w.id}')">UNLOCK</button></div></div>`).join(""):'<div class="empty">Your reward pool is empty.</div>';let w=state.wishlist[0];document.getElementById("nextReward").innerHTML=w?`<b>${w.name}</b><div class="subtle">${state.coins} / ${w.price} Coins · ${Math.max(0,w.price-state.coins)} remaining</div><div class="progressbar" style="margin-top:8px"><i style="width:${Math.min(100,state.coins/w.price*100)}%"></i></div>`:'<div class="empty">Add something you want to the Wishlist and the System will track it here.</div>'}
+function renderAchievements(){document.getElementById("achievementCount").textContent=state.achievements.length+"/"+ACH.length+" UNLOCKED";document.getElementById("achievementList").innerHTML=ACH.map(a=>{let ok=state.achievements.includes(a.id),hidden=a.hidden&&!ok;return `<div class="achievement ${ok?'':'locked'}"><div class="${hidden?'hidden-ach':''}"><div class="achievement-tier">${a.tier.toUpperCase()}</div><b>${ok?'🏆':'○'} ${a.name}</b><br><span>${a.desc}</span><div class="rewards">${a.xp} XP · ${a.coin} 🪙</div></div><span>${ok?'UNLOCKED':'LOCKED'}</span></div>`}).join("")}
+function renderProgress(){let days=[...state.history].slice(0,6).reverse();days.push({date:state.lastDate,day:state.day,completed:Object.values(state.done).filter(x=>x!=="skipped").length});let max=Math.max(7,...days.map(x=>x.completed||0));document.getElementById("weeklyChart").innerHTML=`<div class="chart">${days.map(x=>`<div class="chartcol"><div class="chartbar" style="height:${Math.max(3,(x.completed||0)/max*120)}px"></div>${(x.date||'').slice(5)}</div>`).join("")}</div>`;let hist=[...state.history].slice(0,29),total=hist.reduce((a,x)=>a+(x.completed||0),0)+Object.values(state.done).filter(x=>x!=="skipped").length;document.getElementById("monthStats").innerHTML=`<div class="big-number">${total}</div><div class="subtle">meaningful actions recorded in the last ${Math.min(30,hist.length+1)} days</div><p><b>${activeDays(state)}</b> active days · <b>${state.stats.routesCleared}</b> routes cleared · <b>${state.stats.comebacks}</b> comeback events</p>`;document.getElementById("bossStatus").textContent=state.day%7===0?"BOSS ACTIVE":"NEXT DAY "+(Math.floor(state.day/7)*7+7);document.getElementById("bossCard").innerHTML=`<div class="event boss"><div class="boss-title">👤 THE FALLEN SELF</div><p>Laziness, passive living, postponement and the dark future created by repeated inaction.</p><div class="progressbar"><i style="width:${state.bossProgress}%"></i></div><div class="subtle" style="margin-top:6px">${state.bossProgress}% · ${state.bossCleared?'OUTGROWN THIS PHASE':'Evidence is built through meaningful action.'}</div></div>`;document.getElementById("timelineDay").textContent="DAY "+state.day;document.getElementById("timeline").innerHTML=[[1,"AWAKENING"],[15,"FOUNDATION"],[46,"ASCENSION"],[76,"TRANSFORMATION"]].map(x=>`<div style="padding:9px 0;border-bottom:1px solid var(--line);opacity:${state.day>=x[0]?1:.4}"><b>DAY ${x[0]}</b> · ${x[1]}</div>`).join("");document.getElementById("progressStats").innerHTML=DOMAINS.map(k=>`<div class="progress-row"><span>${ICON[k]} ${k}</span><div class="progressbar"><i style="width:${Math.min(100,(state.skills[k]||0)%100)}%"></i></div><b>LV.${skillLevel(state.skills[k]||0)}</b></div>`).join("")}
+function renderSystem(){document.getElementById("systemInfo").innerHTML=[["ENGINE","V4 · Adaptive Personal RPG"],["REAL DATE",state.lastDate],["ARC DAY",state.day],["DAILY MODE",dailyMode()[1]],["CLASS",state.class],["CLOUD",cloudUser?"CONNECTED":"NOT CONNECTED"],["QUEST HISTORY",state.questHistory.length],["ACTIVE DAYS",activeDays(state)]].map(x=>`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);font-size:10px"><span class="subtle">${x[0]}</span><b>${x[1]}</b></div>`).join("")}
 function renderLog(){document.getElementById("log").innerHTML=state.logs.length?state.logs.map(x=>`<p>${x}</p>`).join(""):'<div class="empty">No events yet.</div>'}
-
-function updateAuthUI(){
- const st=document.getElementById("cloudStatus"),n=document.getElementById("authNotice"),f=document.getElementById("authForm"),u=document.getElementById("userPanel");
- if(!cloudReady){st.textContent="LOCAL MODE";n.innerHTML="Cloud chưa được cấu hình. Thêm Supabase vào <b>config.js</b>.";f.style.display="block";u.style.display="none";return}
- if(cloudUser){st.textContent="CLOUD CONNECTED";n.className="notice cloud-ok";n.textContent="Tiến trình đang được lưu trên cloud.";f.style.display="none";u.style.display="block";document.getElementById("userEmail").textContent=cloudUser.email||"Signed in";}
- else{st.textContent="READY";n.className="notice";n.textContent="Đăng nhập để đồng bộ tiến trình giữa laptop và điện thoại.";f.style.display="block";u.style.display="none";}
-}
-async function signUp(){
- if(!cloudReady){toast("Cloud chưa được cấu hình");return}
- const email=document.getElementById("email").value.trim(),password=document.getElementById("password").value;
- if(!email||password.length<6){toast("Nhập email và mật khẩu ≥ 6 ký tự");return}
- const {data,error}=await cloud.auth.signUp({email,password});
- if(error){toast(error.message);return}
- if(data.session){
-  cloudUser=data.user;ensureDay();await syncNow(true);updateAuthUI();toast("☁ Account created · Cloud connected");
- }else toast("Tài khoản đã tạo. Nếu yêu cầu xác nhận email, hãy kiểm tra inbox.");
-}
-async function signIn(){
- if(!cloudReady){toast("Cloud chưa được cấu hình");return}
- const email=document.getElementById("email").value.trim(),password=document.getElementById("password").value;
- if(!email||!password){toast("Nhập email và mật khẩu");return}
- const {data,error}=await cloud.auth.signInWithPassword({email,password});
- if(error){toast(error.message);return}
- cloudUser=data.user;await pullCloud();updateAuthUI();toast("☁ Cloud save connected");
-}
-async function pullCloud(){
- if(!cloudUser)return;
- const {data,error}=await cloud.from("game_saves").select("save").eq("user_id",cloudUser.id).maybeSingle();
- if(error){console.warn(error);toast("Cloud read lỗi: "+error.message);return}
- if(data?.save){
-  state=migrate(data.save);
-  const changed=ensureDay(state);
-  if(changed)await syncNow(true);
-  persist();render();
- }else{
-  ensureDay(state);await syncNow(true);render();
- }
-}
-async function syncNow(silent=false){
- if(!cloudUser)return;
- const {error}=await cloud.from("game_saves").upsert({user_id:cloudUser.id,save:state,updated_at:new Date().toISOString()},{onConflict:"user_id"});
- if(error){if(!silent)toast("Sync lỗi: "+error.message);console.warn(error)}
- else if(!silent)toast("☁ Đã lưu cloud");
-}
-async function signOutUser(){if(cloud)await cloud.auth.signOut();cloudUser=null;updateAuthUI();render();toast("Đã đăng xuất · Local cache vẫn còn")}
-function exportSave(){
- const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"}),a=document.createElement("a");
- a.href=URL.createObjectURL(blob);a.download="winter-arc-v3-day-"+state.day+".json";a.click();URL.revokeObjectURL(a.href);toast("Save exported.");
-}
-function importSave(e){
- const f=e.target.files[0];if(!f)return;const r=new FileReader();
- r.onload=()=>{try{state=migrate(JSON.parse(r.result));ensureDay(state);saveAndRender();toast("Save imported.");}catch(err){toast("Invalid save file.")}};
- r.readAsText(f);
-}
-function resetToday(){if(confirm("Reset today's route only? XP, skills and coins stay safe.")){state.done={};state.energy=100;log("TODAY RESET BY PLAYER");saveAndRender();toast("Today's route reset.")}}
-function resetAll(){if(confirm("Erase ALL V3 progress? Export a backup first.")){localStorage.removeItem(STORAGE_KEY);location.reload()}}
-function toast(t){const x=document.getElementById("toast");x.textContent=t;x.classList.add("show");setTimeout(()=>x.classList.remove("show"),2000)}
-function showSystem(){openModal("SYSTEM INFO",`<p style="font-size:11px;color:var(--muted)">Today is <b>${state.lastDate}</b>, Winter Arc Day <b>${state.day}</b>. The V3 engine uses the real calendar date and generates a deterministic route for each day, so the same account sees the same daily route on laptop and phone.</p>`)}
-function openModal(title,body){document.getElementById("modalTitle").textContent=title;document.getElementById("modalBody").innerHTML=body;document.getElementById("modal").classList.add("show")}
-function closeModal(){document.getElementById("modal").classList.remove("show")}
-
-document.querySelectorAll(".tab").forEach(btn=>btn.addEventListener("click",()=>{
- document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));btn.classList.add("active");
- document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.getElementById(btn.dataset.page).classList.add("active");
-}));
-
-state=loadLocal();
-ensureDay(state);
-checkAchievements();
-persist();
-render();
-
-if(cloudReady){
- cloud.auth.getSession().then(async ({data})=>{
-  cloudUser=data.session?.user||null;updateAuthUI();
-  if(cloudUser)await pullCloud();
- });
- cloud.auth.onAuthStateChange((_event,session)=>{
-  cloudUser=session?.user||null;updateAuthUI();
- });
-}
-</script>
-</body>
-</html>
+function saveAndRender(sync=true){checkAchievements();persist();render();if(sync&&cloudUser)syncNow(true)}
+function updateAuthUI(){let st=document.getElementById("cloudStatus"),n=document.getElementById("authNotice"),f=document.getElementById("authForm"),u=document.getElementById("userPanel");if(!cloudReady){st.textContent="LOCAL MODE";n.innerHTML="Cloud is not configured. Keep your working V3 <b>config.js</b> when deploying V4.";f.style.display="none";u.style.display="none";return}if(cloudUser){st.textContent="CLOUD CONNECTED";n.textContent="V4 progress is synced through your existing Supabase game_saves row.";f.style.display="none";u.style.display="block";document.getElementById("userEmail").textContent=cloudUser.email||"Signed in"}else{st.textContent="READY";n.textContent="Log in with the same account you used in V3.";f.style.display="block";u.style.display="none"}}
+async function signUp(){if(!cloudReady)return;let email=document.getElementById("email").value.trim(),password=document.getElementById("password").value;if(!email||password.length<6){toast("Enter email and password ≥ 6 characters");return}let {data,error}=await cloud.auth.signUp({email,password});if(error){toast(error.message);return}if(data.session){cloudUser=data.user;await syncNow(true);updateAuthUI()}else toast("Account created. Confirm email if your project requires it.")}
+async function signIn(){if(!cloudReady)return;let email=document.getElementById("email").value.trim(),password=document.getElementById("password").value;let {data,error}=await cloud.auth.signInWithPassword({email,password});if(error){toast(error.message);return}cloudUser=data.user;await pullCloud();updateAuthUI();toast("☁ Cloud connected")}
+async function pullCloud(){if(!cloudUser)return;let {data,error}=await cloud.from("game_saves").select("save").eq("user_id",cloudUser.id).maybeSingle();if(error){toast("Cloud read error: "+error.message);return}if(data?.save){state=migrate(data.save);ensureDay(state);persist();render();await syncNow(true)}else await syncNow(true)}
+async function syncNow(silent=false){if(!cloudUser)return;let {error}=await cloud.from("game_saves").upsert({user_id:cloudUser.id,save:state,updated_at:new Date().toISOString()},{onConflict:"user_id"});if(error){if(!silent)toast("Sync error: "+error.message)}else if(!silent)toast("☁ Cloud saved")}
+async function signOutUser(){if(cloud)await cloud.auth.signOut();cloudUser=null;updateAuthUI();render()}
+function exportSave(){let blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="winter-arc-v4-day-"+state.day+".json";a.click();URL.revokeObjectURL(a.href)}
+function importSave(e){let f=e.target.files[0];if(!f)return,r=new FileReader();r.onload=()=>{try{state=migrate(JSON.parse(r.result));ensureDay(state);saveAndRender();toast("Save imported") }catch(_){toast("Invalid save")}};r.readAsText(f)}
+function resetToday(){if(confirm("Reset today's quest states only? Earned XP stays safe.")){state.done={};state.energy=100;state.bonusQuests=[];state.routeClearDate=null;saveAndRender()}}function resetAll(){if(confirm("Erase ALL V4 local progress? Export a backup first.")){localStorage.removeItem(STORAGE_KEY);location.reload()}}
+function toggleMusic(){state.music=!state.music;persist();document.getElementById("musicBtn").textContent=state.music?"♫ MUSIC ON":"♫ MUSIC OFF";if(state.music)toast("Music toggle is ready. V4 does not auto-stream copyrighted audio; add your own ambient source later.")}
+function goPage(id){document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.page===id));document.querySelectorAll(".page").forEach(x=>x.classList.toggle("active",x.id===id));window.scrollTo({top:0,behavior:"smooth"})}
+function showSystem(){openModal("V4 SYSTEM",`<p class="subtle">Quest Engine: priority + neglect + cooldown + skill unlock + controlled variety + daily mode.</p><p class="subtle">Character Engine: progressive skill nodes + behavior-detected class + traits.</p><p class="subtle">Narrative: light chapters, events and The Fallen Self boss.</p>`)}function openModal(t,b){document.getElementById("modalTitle").textContent=t;document.getElementById("modalBody").innerHTML=b;document.getElementById("modal").classList.add("show")}function closeModal(){document.getElementById("modal").classList.remove("show")}function toast(t){let x=document.getElementById("toast");x.textContent=t;x.classList.add("show");setTimeout(()=>x.classList.remove("show"),2200)}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>goPage(b.dataset.page)));
+state=loadLocal();ensureDay(state);checkAchievements();persist();render();
+if(cloudReady){cloud.auth.getSession().then(async({data})=>{cloudUser=data.session?.user||null;updateAuthUI();if(cloudUser)await pullCloud()});cloud.auth.onAuthStateChange((_e,s)=>{cloudUser=s?.user||null;updateAuthUI()})}
+</script></body></html>
