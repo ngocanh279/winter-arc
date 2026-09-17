@@ -1,4 +1,4 @@
-// V3.1 APP MODULE
+// V3.2 APP MODULE — stable V3.1 boot unchanged
 // Stable V3 save controls + boot. Only addition: bind Wishlist form events.
 
 function exportSave(){
