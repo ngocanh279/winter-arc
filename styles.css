@@ -68,3 +68,12 @@ header{display:flex;justify-content:space-between;align-items:center;gap:14px;ma
 .wish-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 @media(max-width:820px){.wishlist-form{grid-template-columns:1fr 1fr}.wishlist-grid{grid-template-columns:1fr}.wish-card{grid-template-columns:64px 1fr}.wish-img,.wish-placeholder{width:64px;height:64px}}
 @media(max-width:520px){.wishlist-form{grid-template-columns:1fr}.wishlist-form .wide{grid-column:auto}}
+
+
+/* V3.2 Quest Engine Wave 1 — isolated additions */
+.quest-world-card{margin-top:16px}
+.quest-tools{display:flex;gap:10px;align-items:center;margin-bottom:12px}
+.bonus-board{display:grid;grid-template-columns:1fr;gap:2px}
+.bonus-quest{background:#fcfbf7}
+.bonus-quest .status{background:#eef0eb}
+@media(max-width:620px){.quest-tools{align-items:stretch;flex-direction:column}.quest-tools .btn{width:100%}}
