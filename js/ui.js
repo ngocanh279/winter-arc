@@ -9,7 +9,7 @@ function render(){
  document.getElementById("xpbar").style.width=Math.min(100,state.xp/nextXP()*100)+"%";
  document.getElementById("momentum").textContent=state.momentum;document.getElementById("mbar").style.width=state.momentum+"%";
  document.getElementById("energy").textContent=state.energy;document.getElementById("coins").textContent=state.coins;
- document.getElementById("questsDone").textContent=Object.keys(state.done).length+"/7";
+ document.getElementById("questsDone").textContent=state.todayQuests.filter(q=>state.done[q.key]).length+"/7";
  document.getElementById("class").textContent=state.class;
  document.getElementById("chapter").textContent=chapter[0];document.getElementById("chapterDesc").textContent=chapter[1];
  document.getElementById("route").textContent="DAY "+String(d).padStart(2,"0");
@@ -19,14 +19,25 @@ function render(){
  const qhtml=state.todayQuests.map(q=>questHTML(q)).join("");
  document.getElementById("dashboardQuests").innerHTML=qhtml;
  document.getElementById("allQuests").innerHTML=qhtml;
+ renderQuestWorld();
  renderEvent();renderSkills();renderShop();renderAchievements();renderProgress();renderSystem();renderLog();updateAuthUI();
 }
 function questHTML(q){
  const st=state.done[q.key];
  return `<div class="quest ${q.type==='boss'?'boss':''}">
-  <div class="quest-main"><div class="icon">${q.icon}</div><div><div class="qtitle">${q.title}</div><div class="qmeta">${q.desc}</div><div class="rewards">+${q.xp} XP · +${q.coin} 🪙 · −${q.energy} Energy · ${q.type.toUpperCase()}</div></div></div>
+  <div class="quest-main"><div class="icon">${q.icon}</div><div><div class="qtitle">${q.title}</div><div class="qmeta">${q.desc}</div><div class="rewards">+${q.xp} XP · +${q.coin} 🪙 · −${q.energy} Energy · ${(q.role||q.type).toUpperCase()}</div></div></div>
   <div>${st?`<span class="status ${st==='adapted'?'adapt':'done'}">${st.toUpperCase()}</span>`:`<span class="status">AVAILABLE</span><div class="actions"><button class="btn primary" onclick="completeQuest('${q.key}')">COMPLETE</button><button class="btn" onclick="adaptQuest('${q.key}')">ADAPT</button></div>`}</div>
  </div>`;
+}
+function renderQuestWorld(){
+ const board=document.getElementById("bonusQuestBoard");if(!board)return;
+ if(!window.QuestEngine){board.innerHTML='<div class="empty">Quest Engine unavailable.</div>';return}
+ const list=QuestEngine.board(state),factor=QuestEngine.bonusFactor(state);
+ if(!list.length){board.innerHTML='<div class="empty">No bonus quests available today.</div>';return}
+ board.innerHTML=list.map(q=>{
+  const key=`bonus_${q.id}_${localISO()}`,done=state.done[key],pct=Math.round(factor*100);
+  return `<div class="quest bonus-quest"><div class="quest-main"><div class="icon">${q.icon}</div><div><div class="qtitle">${q.title}</div><div class="qmeta">${q.desc}</div><div class="rewards">+${Math.ceil(q.xp*factor)} XP · +${Math.ceil(q.coin*factor)} 🪙 · −${q.energy} Energy · ${q.skill||"GENERAL"} · ${pct}%</div></div></div><div>${done?'<span class="status done">BONUS DONE</span>':`<span class="status">AVAILABLE</span><div class="actions"><button class="btn primary" onclick="completeBonusQuest('${q.id}')">COMPLETE</button></div>`}</div></div>`;
+ }).join("");
 }
 function renderEvent(){
  const e=state.currentEvent||eventForDay(state.day);
@@ -64,14 +75,15 @@ function renderProgress(){
 }
 function renderSystem(){
  document.getElementById("systemInfo").innerHTML=[
-  ["ENGINE","V3 · Calendar + Quest + Cloud"],
+  ["ENGINE","V3.2 · Stable V3 + Quest Engine"],
   ["REAL DATE",state.lastDate],
   ["ARC DAY","Day "+state.day],
   ["TODAY ROUTE",state.todayQuests.length+" quests"],
   ["CLOUD",cloudUser?"CONNECTED":"NOT CONNECTED"],
   ["LOCAL CACHE","ACTIVE"],
   ["ACHIEVEMENTS",state.achievements.length+" unlocked"],
-  ["HISTORY",state.history.length+" archived days"]
+  ["HISTORY",state.history.length+" archived days"],
+  ["QUEST MEMORY",(state.questHistory||[]).length+" records"]
  ].map(x=>`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);font-size:10px"><span style="color:var(--muted)">${x[0]}</span><b>${x[1]}</b></div>`).join("");
 }
 function renderLog(){document.getElementById("log").innerHTML=state.logs.length?state.logs.map(x=>`<p>${x}</p>`).join(""):'<div class="empty">No events yet.</div>'}
