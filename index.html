@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Winter Arc System</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap');
+:root{--ivory:#f5f2e9;--paper:#fbfaf6;--green:#193b32;--green2:#2d5a4d;--gold:#b2945b;--blue:#a9c4ca;--ink:#202522;--muted:#6d746f;--line:#d9d6cc;--success:#486d58}
+*{box-sizing:border-box}body{margin:0;background:var(--ivory);color:var(--ink);font-family:"DM Sans",sans-serif}button{font:inherit;cursor:pointer}
+.app{max-width:1180px;margin:auto;min-height:100vh;padding:22px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.brand{font-family:"Playfair Display";letter-spacing:2px;color:var(--green);font-size:20px}.day{font-size:12px;color:var(--muted);letter-spacing:1px}
+.grid{display:grid;grid-template-columns:1.05fr 1.5fr;gap:18px}.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 8px 28px #193b3208}.hero{background:var(--green);color:white;border:0}
+.eyebrow{font-size:11px;letter-spacing:2px;opacity:.7}.name{font-family:"Playfair Display";font-size:34px;margin:6px 0 2px}.class{font-size:12px;color:#d8c89d;margin-bottom:20px}
+.bar{height:7px;background:#ffffff20;border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:var(--gold);width:0;transition:.4s}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}.stat{padding:12px;border:1px solid #ffffff18;border-radius:12px;background:#ffffff09}.stat b{display:block;font-size:19px}.stat span{font-size:10px;opacity:.65;letter-spacing:1px}.momentum{margin-top:18px}.momentum .bar i{background:var(--blue)}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.section-title h2{font-family:"Playfair Display";font-size:22px;margin:0}.pill{font-size:10px;border:1px solid var(--line);padding:5px 9px;border-radius:99px;color:var(--muted)}
+.quest{border:1px solid var(--line);border-radius:14px;padding:15px;margin:10px 0;display:flex;gap:12px;align-items:center;justify-content:space-between}.quest-main{display:flex;gap:12px;align-items:flex-start}.icon{font-size:22px}.qtitle{font-weight:700;font-size:14px}.qmeta{font-size:11px;color:var(--muted);margin-top:4px}.rewards{font-size:10px;color:var(--green2);margin-top:7px}.status{font-size:9px;letter-spacing:1px;padding:6px 8px;border-radius:7px;background:#eceae3;color:var(--muted);white-space:nowrap}.status.done{background:#dce9df;color:var(--success)}.status.adapt{background:#e8e1d2;color:#806d42}
+.actions{display:flex;gap:7px;margin-top:9px}.btn{border:1px solid var(--line);background:white;padding:7px 10px;border-radius:9px;font-size:11px}.btn.primary{background:var(--green);color:white;border-color:var(--green)}.btn:disabled{opacity:.4;cursor:not-allowed}
+.full{grid-column:1/-1}.bottom{display:grid;grid-template-columns:1fr 1fr;gap:18px}.skill{margin:10px 0}.skilltop{display:flex;justify-content:space-between;font-size:11px}.skillbar{height:5px;background:#e6e3da;border-radius:9px;margin-top:5px}.skillbar i{display:block;height:100%;background:var(--green2);border-radius:9px}.log{max-height:230px;overflow:auto}.log p{font-size:11px;border-bottom:1px solid var(--line);padding-bottom:8px}.empty{color:var(--muted);font-size:12px}
+.notice{padding:12px 14px;background:#edf1eb;border-radius:12px;font-size:11px;margin-bottom:12px}.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--green);color:white;padding:12px 18px;border-radius:12px;font-size:12px;opacity:0;pointer-events:none;transition:.3s}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:800px){.app{padding:14px}.grid{grid-template-columns:1fr}.full{grid-column:auto}.bottom{grid-template-columns:1fr}.name{font-size:29px}.quest{align-items:flex-start;flex-direction:column}.quest>div:last-child{width:100%}}
+</style>
+</head>
+<body>
+<div class="app">
+<header><div class="brand">❄ WINTER ARC SYSTEM</div><div class="day" id="day"></div></header>
+<div class="grid">
+<section class="card hero">
+<div class="eyebrow">CHARACTER PROFILE</div><div class="name">ELEANOR <span id="level">LV.01</span></div>
+<div class="class">CLASS: <span id="class">UNDEFINED</span></div>
+<div style="font-size:11px;opacity:.7">XP <span id="xp">0</span> / <span id="nextxp">135</span></div><div class="bar"><i id="xpbar"></i></div>
+<div class="stats"><div class="stat"><b id="momentum">50</b><span>MOMENTUM</span></div><div class="stat"><b id="energy">100</b><span>ENERGY</span></div><div class="stat"><b id="coins">0</b><span>COINS</span></div><div class="stat"><b id="questsDone">0/7</b><span>QUESTS TODAY</span></div></div>
+<div class="momentum"><div style="font-size:10px;opacity:.7;margin-bottom:5px">MOMENTUM</div><div class="bar"><i id="mbar"></i></div></div>
+</section>
+<section class="card"><div class="section-title"><h2>Today's Quests</h2><span class="pill" id="route">DAY 01</span></div><div id="quests"></div></section>
+<section class="card"><div class="section-title"><h2>Skill Tree</h2><span class="pill">12 STATS</span></div><div id="skills"></div></section>
+<section class="card"><div class="section-title"><h2>System Log</h2><span class="pill">AUTO-SAVED</span></div><div class="log" id="log"></div></section>
+<section class="card full" id="authCard"><div class="section-title"><h2>☁ Cloud Save</h2><span class="pill" id="cloudStatus">LOCAL MODE</span></div><div class="notice" id="authNotice">Cloud save is not connected yet. You can still play locally. Add your Supabase settings to <b>config.js</b> to enable login + cross-device save.</div><div id="authForm"><input id="email" type="email" placeholder="Email" style="padding:9px;border:1px solid var(--line);border-radius:9px;margin-right:6px;width:220px"><input id="password" type="password" placeholder="Password" style="padding:9px;border:1px solid var(--line);border-radius:9px;margin-right:6px;width:180px"><button class="btn primary" onclick="signUp()">Create account</button><button class="btn" onclick="signIn()">Log in</button></div><div id="userPanel" style="display:none"><span id="userEmail" style="font-size:12px"></span> <button class="btn" onclick="syncNow()">Sync now</button><button class="btn" onclick="signOutUser()">Log out</button></div></section>
+<section class="card full"><div class="section-title"><h2>Save & System</h2><span class="pill">PERSISTENT</span></div>
+<div class="notice">💾 Your progress is saved automatically. When you open this file again on a later date, the system keeps your character and generates the new day's route automatically.</div>
+<button class="btn" onclick="exportSave()">Export Save</button>
+<button class="btn" onclick="document.getElementById('importFile').click()">Import Save</button>
+<button class="btn" onclick="resetDay()">Reset Today's Progress</button>
+<button class="btn" onclick="resetAll()">Reset Entire Save</button>
+<input id="importFile" type="file" accept=".json" style="display:none" onchange="importSave(event)">
+<p style="font-size:10px;color:var(--muted)">Tip: keep this same <b>index.html</b> file. Do not open a newly extracted copy, use Incognito, or clear site/browser data if you want browser saving to persist.</p>
+</section>
+</div></div><div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script>
+let cloud=null, cloudUser=null, cloudReady=false;
+if(window.SUPABASE_CONFIG?.url && window.SUPABASE_CONFIG?.anonKey){ cloud=supabase.createClient(window.SUPABASE_CONFIG.url, window.SUPABASE_CONFIG.anonKey); cloudReady=true; }
+const START=new Date("2026-09-17T00:00:00");
+const QUEST_POOLS={
+core:[
+{id:"eng",icon:"🇬🇧",title:"LANGUAGE AWAKENING",desc:"English Speaking — 30 min",xp:50,coin:20,energy:20,stat:["English",30]},
+{id:"workout",icon:"🏋🏻",title:"FIRST BLOOD",desc:"Complete today's workout",xp:60,coin:25,energy:30,stat:["Body",35]},
+{id:"chi",icon:"🇨🇳",title:"LANGUAGE SEED",desc:"Chinese — 20 min",xp:20,coin:10,energy:10,stat:["Chinese",20]},
+{id:"ir",icon:"🌐",title:"DIPLOMAT'S EYE",desc:"Read 1 IR article + 3 takeaways",xp:25,coin:12,energy:12,stat:["Knowledge",20],stat2:["Reading",10]},
+{id:"space",icon:"✨",title:"RESET YOUR SPACE",desc:"Tidy desk + prepare for tomorrow",xp:10,coin:5,energy:5,stat:["Lifestyle",10],stat2:["Discipline",5]},
+{id:"water",icon:"💧",title:"HYDRATE",desc:"Drink enough water today",xp:5,coin:2,energy:0,stat:["Lifestyle",5]},
+{id:"sleep",icon:"🌙",title:"SLEEP PROTOCOL",desc:"Begin bedtime routine on time",xp:10,coin:5,energy:0,stat:["Lifestyle",10],stat2:["Discipline",5]}
+],
+alt:[
+{id:"eng",icon:"🇬🇧",title:"ENGLISH DEEP WORK",desc:"Speaking + shadowing — 25 min",xp:45,coin:18,energy:18,stat:["English",28]},
+{id:"workout",icon:"🏋🏻",title:"BODY FORGE",desc:"Complete planned workout / 30 min movement",xp:55,coin:24,energy:28,stat:["Body",32]},
+{id:"chi",icon:"🇨🇳",title:"MANDARIN MOMENT",desc:"Chinese — 20 min",xp:20,coin:10,energy:10,stat:["Chinese",20]},
+{id:"ir",icon:"🌐",title:"FOREIGN POLICY SCAN",desc:"1 article + 3 key points",xp:25,coin:12,energy:12,stat:["Knowledge",20],stat2:["Reading",10]},
+{id:"space",icon:"✨",title:"LIFE RESET",desc:"10-minute reset + tomorrow plan",xp:10,coin:5,energy:5,stat:["Lifestyle",10],stat2:["Discipline",5]},
+{id:"water",icon:"💧",title:"HYDRATE",desc:"Hit your water target",xp:5,coin:2,energy:0,stat:["Lifestyle",5]},
+{id:"sleep",icon:"🌙",title:"SLEEP PROTOCOL",desc:"Start bedtime routine on time",xp:10,coin:5,energy:0,stat:["Lifestyle",10],stat2:["Discipline",5]}
+]};
+const SKILLS={English:0,Chinese:0,Body:0,Lifestyle:0,Knowledge:0,Reading:0,Discipline:0,Academic:0,Appearance:0,Career:0,Finance:0,Communication:0};
+const initial={version:2,startDate:"2026-09-17",lastDate:null,day:1,xp:0,level:1,momentum:50,energy:100,coins:0,class:"UNDEFINED",todayQuests:[],done:{},skills:SKILLS,logs:[]};
+let state=loadState();
+async function signUp(){ if(!cloudReady){toast("Cloud chưa được cấu hình");return} const email=document.getElementById("email").value.trim(),password=document.getElementById("password").value; if(!email||password.length<6){toast("Nhập email và mật khẩu ≥ 6 ký tự");return} const {error}=await cloud.auth.signUp({email,password}); if(error) toast(error.message); else toast("Tài khoản đã tạo. Kiểm tra email nếu Supabase yêu cầu xác nhận."); }
+async function signIn(){ if(!cloudReady){toast("Cloud chưa được cấu hình");return} const email=document.getElementById("email").value.trim(),password=document.getElementById("password").value; const {data,error}=await cloud.auth.signInWithPassword({email,password}); if(error) toast(error.message); else {cloudUser=data.user; await pullCloud(); updateAuthUI(); toast("☁ Cloud save connected");} }
+async function signOutUser(){ if(cloud) await cloud.auth.signOut(); cloudUser=null; updateAuthUI(); toast("Đã đăng xuất · Local save vẫn còn"); }
+async function pullCloud(){ if(!cloudUser)return; const {data,error}=await cloud.from("game_saves").select("save").eq("user_id",cloudUser.id).maybeSingle(); if(error){console.warn(error);return} if(data?.save){ state=Object.assign(state,data.save); state.skills=Object.assign({...SKILLS},state.skills||{}); persist(state); render(); } else { await syncNow(); } }
+async function syncNow(){ if(!cloudUser)return; const {error}=await cloud.from("game_saves").upsert({user_id:cloudUser.id,save:state,updated_at:new Date().toISOString()},{onConflict:"user_id"}); if(error)toast("Sync lỗi: "+error.message); else toast("☁ Đã lưu cloud"); }
+function updateAuthUI(){ const st=document.getElementById("cloudStatus"),n=document.getElementById("authNotice"),f=document.getElementById("authForm"),u=document.getElementById("userPanel"); if(!cloudReady){st.textContent="LOCAL MODE";n.innerHTML="Cloud save chưa kết nối. Thêm Supabase vào <b>config.js</b> để dùng login + save đa thiết bị.";f.style.display="block";u.style.display="none";return} if(cloudUser){st.textContent="CLOUD CONNECTED";n.textContent="Tiến trình đang được lưu trên cloud.";f.style.display="none";u.style.display="block";document.getElementById("userEmail").textContent=cloudUser.email||"Signed in";} else {st.textContent="READY";n.textContent="Đăng nhập để đồng bộ tiến trình giữa laptop và điện thoại.";f.style.display="block";u.style.display="none";} }
+function key(){return "WINTER_ARC_SYSTEM_V1_1"}
+function loadState(){
+ try{
+  const raw=localStorage.getItem(key());
+  if(raw){const s=JSON.parse(raw);s.skills=Object.assign({...SKILLS},s.skills||{});s.done=s.done||{};s.logs=s.logs||[];s.todayQuests=s.todayQuests||[];return advanceDay(s)}
+ }catch(e){}
+ const s=structuredClone(initial); s.todayQuests=makeQuests(1); s.lastDate=todayISO(); addLogState(s,"SYSTEM INITIALIZED · DAY 01"); persist(s); return s;
+}
+function todayISO(){return new Date().toISOString().slice(0,10)}
+function daysSinceStart(){
+ const d=new Date(todayISO()+"T00:00:00"); return Math.floor((d-START)/86400000)+1;
+}
+function makeQuests(day){
+ const pool=day%2?QUEST_POOLS.core:QUEST_POOLS.alt;
+ return pool.map(q=>({...q,key:q.id+"_"+day}));
+}
+function advanceDay(s){
+ const today=todayISO(); if(s.lastDate===today && s.todayQuests?.length)return s;
+ const newDay=Math.max(1,daysSinceStart());
+ s.day=newDay;s.lastDate=today;s.energy=100;s.done={};s.todayQuests=makeQuests(newDay);
+ s.momentum=Math.max(0,Math.min(100,(s.momentum||50)-Math.max(0,newDay-(s.day||newDay)-1)*2));
+ s.logs=s.logs||[];s.logs.unshift(new Date().toLocaleString()+" — NEW DAY GENERATED · DAY "+String(newDay).padStart(2,"0"));
+ persist(s);return s;
+}
+function persist(s=state){try{localStorage.setItem(key(),JSON.stringify(s))}catch(e){toast("Browser save unavailable — use Export Save.")}}
+function nextXP(){return 100+state.level*35}
+function addLogState(s,t){s.logs.unshift(new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})+" — "+t);s.logs=s.logs.slice(0,50)}
+function addLog(t){addLogState(state,t)}
+function complete(key){
+ const q=state.todayQuests.find(x=>x.key===key);if(!q||state.done[key])return;
+ if(state.energy<q.energy){toast("Not enough Energy — use ADAPT.");return}
+ state.done[key]="completed";state.xp+=q.xp;state.coins+=q.coin;state.energy-=q.energy;state.momentum=Math.min(100,state.momentum+10);
+ state.skills[q.stat[0]]+=q.stat[1];if(q.stat2)state.skills[q.stat2[0]]+=q.stat2[1];
+ let leveled=false;while(state.xp>=nextXP()){state.xp-=nextXP();state.level++;leveled=true}
+ addLog(q.title+" COMPLETE · +"+q.xp+" XP · +"+q.coin+" 🪙");if(leveled)addLog("LEVEL UP → LV."+state.level);
+ persist();render();toast("Quest complete: +"+q.xp+" XP");
+}
+function adapt(key){
+ const q=state.todayQuests.find(x=>x.key===key);if(!q||state.done[key])return;
+ state.done[key]="adapted";state.xp+=Math.ceil(q.xp*.45);state.coins+=Math.ceil(q.coin*.5);state.momentum=Math.min(100,state.momentum+3);
+ state.skills[q.stat[0]]+=Math.ceil(q.stat[1]*.4);addLog(q.title+" ADAPTED · progress preserved");persist();render();toast("Adapted — progress preserved.");
+}
+function render(){
+ const d=state.day;document.getElementById("day").textContent=new Date(state.lastDate+"T00:00:00").toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"}).toUpperCase()+" · DAY "+String(d).padStart(2,"0");
+ document.getElementById("level").textContent="LV."+String(state.level).padStart(2,"0");document.getElementById("xp").textContent=state.xp;document.getElementById("nextxp").textContent=nextXP();
+ document.getElementById("xpbar").style.width=Math.min(100,state.xp/nextXP()*100)+"%";document.getElementById("momentum").textContent=state.momentum;document.getElementById("mbar").style.width=state.momentum+"%";
+ document.getElementById("energy").textContent=state.energy;document.getElementById("coins").textContent=state.coins;document.getElementById("questsDone").textContent=Object.keys(state.done).length+"/7";document.getElementById("class").textContent=state.class;document.getElementById("route").textContent="DAY "+String(d).padStart(2,"0");
+ document.getElementById("quests").innerHTML=state.todayQuests.map(q=>{const st=state.done[q.key];return `<div class="quest"><div class="quest-main"><div class="icon">${q.icon}</div><div><div class="qtitle">${q.title}</div><div class="qmeta">${q.desc}</div><div class="rewards">+${q.xp} XP · +${q.coin} 🪙 · −${q.energy} Energy</div></div></div><div>${st?`<span class="status ${st==='adapted'?'adapt':'done'}">${st.toUpperCase()}</span>`:`<span class="status">AVAILABLE</span><div class="actions"><button class="btn primary" onclick="complete('${q.key}')">COMPLETE</button><button class="btn" onclick="adapt('${q.key}')">ADAPT</button></div>`}</div></div>`}).join("");
+ const order=["Body","English","Chinese","Academic","Knowledge","Lifestyle","Appearance","Career","Finance","Discipline","Communication","Reading"];
+ document.getElementById("skills").innerHTML=order.map(s=>`<div class="skill"><div class="skilltop"><span>${s}</span><b>${state.skills[s]}</b></div><div class="skillbar"><i style="width:${Math.min(100,state.skills[s])}%"></i></div></div>`).join("");
+ document.getElementById("log").innerHTML=state.logs.length?state.logs.map(x=>`<p>${x}</p>`).join(""):'<div class="empty">No events yet.</div>';
+}
+function toast(t){const x=document.getElementById("toast");x.textContent=t;x.classList.add("show");setTimeout(()=>x.classList.remove("show"),1900)}
+function resetDay(){if(confirm("Reset only today's quests? Your XP, skills, coins and level stay safe.")){state.done={};state.energy=100;persist();render();toast("Today's route reset.")}}
+function resetAll(){if(confirm("Erase ALL Winter Arc progress? This cannot be undone unless you have an Export Save.")){localStorage.removeItem(key());location.reload()}}
+function exportSave(){const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="winter-arc-save-day-"+state.day+".json";a.click();URL.revokeObjectURL(a.href);toast("Save exported.")}
+function importSave(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const s=JSON.parse(r.result);if(!s.skills||s.version!==2)throw Error();state=s;persist();render();toast("Save imported.");}catch(err){toast("Invalid save file.")}};r.readAsText(f)}
+render();
+</script>
+</body></html>
+<script>
+if(cloudReady){ cloud.auth.getSession().then(async ({data})=>{ cloudUser=data.session?.user||null; updateAuthUI(); if(cloudUser) await pullCloud(); }); cloud.auth.onAuthStateChange((_e,session)=>{ cloudUser=session?.user||null; updateAuthUI(); }); } else updateAuthUI();
+</script>
