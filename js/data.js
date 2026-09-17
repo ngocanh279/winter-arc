@@ -59,6 +59,6 @@ const initialState={
  version:3,startDate:START_DATE,lastDate:null,day:1,level:1,xp:0,momentum:50,energy:100,coins:0,class:"UNDEFINED",
  todayQuests:[],done:{},skills:{...SKILLS},logs:[],events:[],history:[],
  stats:{totalCompleted:0,totalAdapted:0,adapted:0,bossesCleared:0,questsByDay:{}},
- achievements:[],purchased:[],wishlist:[],
+ achievements:[],purchased:[],wishlist:[],questHistory:[],
  currentEvent:null,bossProgress:0,bossCleared:false
 };
