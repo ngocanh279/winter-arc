@@ -19,7 +19,7 @@ function seeded(day, salt=0){let x=(day*9301+49297+salt*233)%233280;return ()=>{
 function pick(arr,rng){return arr[Math.floor(rng()*arr.length)]}
 
 function questClone(q,day,type){return {...clone(q),key:`${type}_${q.id}_${day}`,type}}
-function generateRoute(day){
+function generateLegacyRoute(day){
  const rng=seeded(day);
  const mainPool=[...QUESTS.main],sidePool=[...QUESTS.side],microPool=[...QUESTS.micro];
  const main=[];
@@ -31,6 +31,10 @@ function generateRoute(day){
  const micro=[];
  while(micro.length<2){const q=pick(microPool,rng);if(!micro.some(x=>x.id===q.id))micro.push(questClone(q,day,"micro"))}
  return [...main,...side,...micro];
+}
+function generateRoute(day){
+ if(window.QuestEngine?.generateDailyRoute)return window.QuestEngine.generateDailyRoute(day,state);
+ return generateLegacyRoute(day);
 }
 
 function eventForDay(day){
@@ -69,6 +73,7 @@ function migrate(raw){
  s.achievements=raw.achievements||[];
  s.purchased=raw.purchased||[];
  s.wishlist=raw.wishlist||[];
+ s.questHistory=Array.isArray(raw.questHistory)?raw.questHistory:[];
  return s;
 }
 
@@ -136,12 +141,12 @@ function completeQuest(key){
  state.xp+=xp;state.coins+=coin;state.energy=Math.max(0,state.energy-energy);
  state.momentum=Math.min(100,state.momentum+(q.type==="main"?10:6));
  rewardStats(q,1);
- state.stats.totalCompleted++;
+ state.stats.totalCompleted++;recordQuestHistory(q,"completed","route",1);
  state.stats.questsByDay[state.day]=(state.stats.questsByDay[state.day]||0)+1;
  if(state.day%7===0 && q.type!=="micro")state.bossProgress=Math.min(100,state.bossProgress+25);
  let leveled=false;
  while(state.xp>=nextXP()){state.xp-=nextXP();state.level++;leveled=true}
- if(state.currentEvent?.effect==="bonus" && Object.keys(state.done).length===3){state.xp+=25;state.coins+=10;log("DAILY EVENT BONUS · +25 XP · +10 🪙")}
+ if(state.currentEvent?.effect==="bonus" && state.todayQuests.filter(x=>state.done[x.key]).length===3){state.xp+=25;state.coins+=10;log("DAILY EVENT BONUS · +25 XP · +10 🪙")}
  log(q.title+" COMPLETE · +"+xp+" XP · +"+coin+" 🪙");
  if(leveled)log("LEVEL UP → LV."+state.level);
  if(state.day%7===0 && state.bossProgress>=100 && !state.bossCleared){state.bossCleared=true;state.stats.bossesCleared++;state.xp+=100;state.coins+=50;log("WEEKLY BOSS CLEARED · +100 XP · +50 🪙");}
@@ -153,9 +158,35 @@ function adaptQuest(key){
  const xp=Math.ceil(q.xp*.45),coin=Math.ceil(q.coin*.5);
  state.xp+=xp;state.coins+=coin;state.momentum=Math.min(100,state.momentum+3);
  rewardStats(q,.4);
- state.stats.adapted++;state.stats.totalAdapted++;
+ state.stats.adapted++;state.stats.totalAdapted++;recordQuestHistory(q,"adapted","route",.45);
  log(q.title+" ADAPTED · progress preserved");
  saveAndRender();toast("ADAPTED · progress preserved");
+}
+
+function recordQuestHistory(q,status,kind="route",rewardFactor=1){
+ state.questHistory=Array.isArray(state.questHistory)?state.questHistory:[];
+ state.questHistory.unshift({questId:q.id,skill:q.skill||Object.keys(q.stats||{})[0]||"Lifestyle",date:localISO(),day:state.day,status,kind,rewardFactor});
+ state.questHistory=state.questHistory.slice(0,240);
+}
+function completeBonusQuest(id){
+ if(!window.QuestEngine)return;
+ const q=QuestEngine.findById(id);if(!q)return;
+ const key=`bonus_${q.id}_${localISO()}`;if(state.done[key])return;
+ if(state.energy<q.energy){toast("Not enough Energy · choose a lighter quest.");return}
+ const factor=QuestEngine.bonusFactor(state);
+ const xp=Math.max(1,Math.ceil(q.xp*factor)),coin=Math.max(1,Math.ceil(q.coin*factor));
+ state.done[key]="bonus";state.xp+=xp;state.coins+=coin;state.energy=Math.max(0,state.energy-q.energy);state.momentum=Math.min(100,state.momentum+3);
+ rewardStats(q,factor);state.stats.totalCompleted++;recordQuestHistory(q,"completed","bonus",factor);
+ let leveled=false;while(state.xp>=nextXP()){state.xp-=nextXP();state.level++;leveled=true}
+ log(q.title+" BONUS COMPLETE · +"+xp+" XP · +"+coin+" 🪙"+(factor<1?" · "+Math.round(factor*100)+"% BONUS RATE":""));
+ if(leveled)log("LEVEL UP → LV."+state.level);
+ saveAndRender();toast("BONUS QUEST CLEARED · +"+xp+" XP");
+}
+function surpriseMe(){
+ if(!window.QuestEngine)return;
+ const q=QuestEngine.surprise(state);if(!q){toast("No bonus quests available.");return}
+ const factor=QuestEngine.bonusFactor(state), pct=Math.round(factor*100);
+ openModal("🎲 SURPRISE QUEST",`<div class="event"><b>${q.icon} ${q.title}</b><p>${q.desc}</p><div class="rewards">+${Math.ceil(q.xp*factor)} XP · +${Math.ceil(q.coin*factor)} 🪙 · −${q.energy} Energy · ${pct}% reward rate</div><div class="actions"><button class="btn primary" onclick="completeBonusQuest('${q.id}');closeModal()">COMPLETE QUEST</button></div></div>`);
 }
 
 function checkAchievements(){
